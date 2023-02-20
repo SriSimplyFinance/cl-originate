@@ -1,0 +1,7 @@
+<apex:page controller="Generate_Agreement_txt" sidebar="false" action="{!DownloadDoc}"  contenttype="text/plain/#cais.txt" cache="true">{!strbody}
+<!--Agreement Number : {!contract.Name}
+Next Due Date : {!contract.cllease__Next_Due_Date__c}
+Amount To Current : {!contract.cllease__Amount_to_Current__c}
+Agreement Status: {!contract.cllease__Lease_Status__c}
+Payment Amount: {!contract.cllease__Payment_Amount__c}-->
+</apex:page>

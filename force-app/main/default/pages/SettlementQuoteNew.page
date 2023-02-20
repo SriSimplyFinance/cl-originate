@@ -1,0 +1,497 @@
+<apex:page sidebar="false" standardController="cllease__Lease_Account__c" extensions="SettlementQuoteNewCtrl" docType="html-5.0" lightningStylesheets="true">
+    
+    <apex:include pageName="clcommon__mintTheme"/>
+    
+    
+    <script>
+    
+    function testify(){
+        alert(j$('').length);
+    };
+    
+    function scrolify(tblAsJQueryObject, height){
+        var oTbl = tblAsJQueryObject;
+        
+        // for very large tables you can remove the four lines below
+        // and wrap the table with <div> in the mark-up and assign
+        // height and overflow property
+        var oTblDiv = $("<div/>");
+        oTblDiv.css('height', height);
+        oTblDiv.css('overflow-y','scroll');
+        oTbl.wrap(oTblDiv);
+        
+        // save original width
+        oTbl.attr("data-item-original-width", oTbl.width());
+        oTbl.find('thead tr td').each(function(){
+            $(this).attr("data-item-original-width",$(this).width());
+        });
+        oTbl.find('tbody tr:eq(0) td').each(function(){
+            $(this).attr("data-item-original-width",$(this).width());
+        });
+        
+        
+        // clone the original table
+        var newTbl = oTbl.clone();
+        
+        // remove table header from original table
+        oTbl.find('thead tr').remove();
+        // remove table body from new table
+        newTbl.find('tbody tr').remove();
+        
+        oTbl.parent().parent().prepend(newTbl);
+        newTbl.wrap("<div/>");
+        
+        // replace ORIGINAL COLUMN width
+        newTbl.width(newTbl.attr('data-item-original-width'));
+        newTbl.find('thead tr td').each(function(){
+            $(this).width($(this).attr("data-item-original-width"));
+        });
+        oTbl.width(oTbl.attr('data-item-original-width'));
+        oTbl.find('tbody tr:eq(0) td').each(function(){
+            $(this).width($(this).attr("data-item-original-width"));
+        });
+    }
+    
+    function callScroll() {
+        scrolify($('.scrollableFixedHeader'), 300); // 160 is height
+    }
+    
+    </script>
+    <script type="text/javascript">
+    function selectAllCheckboxes(obj,receivedInputID){
+        var inputCheckBox = document.getElementsByTagName("input");                  
+        for(var i=0; i<inputCheckBox.length; i++){          
+            if(inputCheckBox[i].id.indexOf(receivedInputID)!=-1){                                     
+                inputCheckBox[i].checked = obj.checked;
+            }
+        }
+    }
+    
+    function closeWin() {
+        window.close();    
+    }
+
+    function checkboxCtr(obj,receivedInputID){ 
+            var StandardCheck = document.getElementById("{!$Component.CreateQuoteForm.termquote.Standardquote}");
+            var NewBusinessCheck = document.getElementById("{!$Component.CreateQuoteForm.termquote.NewBusinessquote}");
+            var OtherCheck = document.getElementById("{!$Component.CreateQuoteForm.termquote.Otherquote}");
+            var NBVCheck = document.getElementById("{!$Component.CreateQuoteForm.termquote.NBVquote}");
+                                 
+           if(obj.checked==true){
+               //alert(receivedInputID);
+               if(receivedInputID=='Standardquote'){                                                     
+                   NewBusinessCheck.checked = false;
+                   NewBusinessCheck.disabled = true;
+                   OtherCheck.checked = false;
+                   OtherCheck.disabled = true;
+                   NBVCheck.checked = false;
+                   NBVCheck.disabled = true;                                                     
+               }
+               if(receivedInputID=='NewBusinessquote'){                                                     
+                   StandardCheck.checked = false;
+                   StandardCheck.disabled = true;
+                   OtherCheck.checked = false;
+                   OtherCheck.disabled = true;
+                   NBVCheck.checked = false;
+                   NBVCheck.disabled = true;                                                     
+               }
+               if(receivedInputID=='Otherquote'){                                                     
+                   StandardCheck.checked = false;
+                   StandardCheck.disabled = true;
+                   NewBusinessCheck.checked = false;
+                   NewBusinessCheck.disabled = true;
+                   NBVCheck.checked = false;
+                   NBVCheck.disabled = true;                                                     
+               }
+               if(receivedInputID=='NBVquote'){                                                     
+                   NewBusinessCheck.checked = false;
+                   NewBusinessCheck.disabled = true;
+                   OtherCheck.checked = false;
+                   OtherCheck.disabled = true;
+                   StandardCheck.checked = false;
+                   StandardCheck.disabled = true;                                                     
+               }
+           }    
+               
+           if(obj.checked==false){
+               //alert('Checkbox unchecked');
+               StandardCheck.checked = false;
+               StandardCheck.disabled = false;
+               NewBusinessCheck.checked = false;
+               NewBusinessCheck.disabled = false;
+               OtherCheck.checked = false;
+               OtherCheck.disabled = false;
+               NBVCheck.checked = false;
+               NBVCheck.disabled = false;
+           }
+           quotetype();
+    }
+    
+    function setFocusOnLoad() { 
+        document.getElementById('{!$Component.CreateQuoteForm.settleinfo.quotestartdate}').focus(); 
+    } 
+    onload=setFocusOnLoad;
+    
+    function OTPFeeAssign(){    
+    alert("Call came ");//this is disply
+}
+    
+    </script>
+    
+    <apex:stylesheet value="{!IF($CurrentPage.Parameters.modal == 'true', $Resource.cllease__modalheaderStyle,'')}" />
+    <apex:sectionHeader title="Create New Settlement" />
+    
+    
+    <div style="height:500px;">
+        <apex:form id="CreateQuoteForm" style="white-space: nowrap;">
+        
+            <style>
+                .fontstyle {
+                    font-weight:800;
+                }
+            </style>
+                   
+            <apex:actionStatus id="calculatequotestatus" startText="Calculating.....please wait." stopText=""/>
+            <apex:actionStatus id="savequotestatus" startText="Saving Record.....please wait." stopText=""/>
+            <apex:actionStatus id="acceptquotestatus" startText="Accepting Quote.....please wait." stopText=""/>
+            <apex:pageBlock title="LEASE INFORMATION" id="leaseinfo">
+                <apex:pageBlockButtons location="top">
+                        <apex:commandButton value="(Re)Calculate Quotes" action="{!generateQuoteFigures}" reRender="showmsg,termquote,equipmentDetail,leaseinfo,settleinfo" status="calculatequotestatus" />
+                        <apex:commandButton value="Save" action="{!saveQuoteDetails}" reRender="showmsg,termquote,leaseinfo,settleinfo" disabled="{!savetermination}" status="savequotestatus"/>
+                        <apex:commandButton value="Accept Quote" action="{!acceptTerminationQuote}" reRender="showmsg,termquote,leaseinfo" disabled="{!accepttermination}" status="acceptquotestatus"/>
+                        <!--<apex:commandButton value="Close" action="{!close}" reRender="showmsg,termquote,leaseinfo"/>-->
+                </apex:pageBlockButtons>  
+                <apex:pageblockSection columns="2" id="Cont">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Agreement ID"/>
+                        <apex:outputField value="{!termContract.Name}"/>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel >Customer Name</apex:outputLabel>
+                        <apex:outputField value="{!termContract.cllease__Account__r.name}" />
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel >Product Type</apex:outputLabel>
+                        <apex:outputfield value="{!termContract.cllease__Lease_Product_Name__r.name}" />
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Accepted Termination Quote"/>
+                        <apex:outputtext value="{!AcceptedTerminationQuote}"/>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Settlement Quote"/>
+                        <apex:outputtext value="{!QuoteFiguresHeader.name}"/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageblockSection>   
+            </apex:pageBlock>
+            
+            
+            <apex:pageBlock title="SETTLEMENT INFORMATION" id="settleinfo">
+                
+             <!-- <apex:actionFunction name="quoteexpirydate" action="{!expirydatechange}" reRender="settleinfo,assetsale" /> -->
+             
+              <apex:actionFunction name="checkbox" action="{!BreakDAsset}" reRender="BDA" />
+                <apex:actionFunction name="OTPFee" action="{!InputTextValueM}" reRender="termquote"/>
+             <apex:actionFunction name="fullPartial" action="{!equipmentSelection}" reRender="table" />  
+             <apex:actionFunction name="quotedate" action="{!datechange}" reRender="settleinfo,assetsale" />
+             <apex:actionFunction name="quoteamount" action="{!amountchange}" reRender="settleinfo,assetsale">
+                 <apex:param name="alt1" value="{!termContract.cllease__Account__c}" assignTo="{!thirdParty}"/>
+             </apex:actionFunction>
+             <!-- <apex:actionFunction name="saleamount" action="{!InvoiceSaleAmount}" reRender="settleinfo,assetsale" /> --->
+             <!-- <apex:actionFunction name="thirdParty" action="{!thirdpartychange}" reRender="assetsale" />  -->
+             
+             
+             <apex:panelGrid columns="4" cellpadding="5" cellspacing="0" style="width:100%;margin:0px auto;">
+                     <apex:panelGroup style="float:right">
+                         <apex:outputLabel value="Date of Quote  " for="quotestartdate"/>
+                         <apex:input type="date" id="quotestartdate" value="{!dateOfQuote}" onblur="quotedate();" / >     
+                     </apex:panelGroup>       
+                        
+                        <apex:panelGroup style="float:right">
+                            <apex:outputLabel value="Discount %  " for="discountpercent"/>
+                            <apex:InputText id="discountpercent" value="{!OtherDiscountRate}"/>
+                        </apex:panelGroup>
+                        
+                        <apex:panelGroup style="float:right">
+                            <apex:outputLabel value="Quote Reason  " for="quotereason"/>
+                            <apex:selectList id="quotereason" styleClass="slds-select" multiselect="false" size="1" value="{!QuoteReasonSelect}">
+                                <apex:selectOptions value="{!QuoteReasonOptions}">
+                                </apex:selectOptions>
+                            </apex:selectList>
+                        </apex:panelGroup>                                                
+                        
+                        <apex:panelGroup style="float:right">
+                            <apex:outputLabel value="Full/Partial  " for="fullpartial" />
+                            <apex:selectList id="fullpartial" styleClass="slds-select" multiselect="false" size="1" value="{!FPSelect}" onchange="fullPartial();">
+                                <apex:selectOptions value="{!FPOptions}">
+                                </apex:selectOptions>
+                            </apex:selectList>
+                        </apex:panelGroup>
+                        
+                        
+                        <apex:panelGroup style="float:right">
+                            <apex:outputLabel value="Expiry Date             " / >
+                            <apex:input type="date" id="quoteenddate" value="{!Expirydate}" onblur="quotedate();"/ >  
+                        </apex:panelGroup>
+                                                                         
+                        
+                        <apex:panelGroup style="float:right">
+                            <apex:outputLabel value="Amount  " for="amount"/>
+                            <apex:inputText id="amount" value="{!OtherSettlementAmount}"/>
+                        </apex:panelGroup>
+
+                        <apex:panelGroup style="float:right">
+                            <apex:outputLabel value="3rd Party Sale  "/>
+                            <apex:selectList styleClass="slds-select" multiselect="false" size="1" value="{!ThirdPartySelect}">
+                                <apex:actionSupport event="onchange" reRender="assetsale,settleinfo" />
+                                <apex:selectOptions value="{!ThirdPartySaleOptions}">
+                                </apex:selectOptions>
+                                
+                            </apex:selectList>
+                        </apex:panelGroup>
+                        
+                        <apex:panelGroup style="float:right">
+                            <apex:outputLabel value="New Business  "/>
+                            <apex:selectList styleClass="slds-select" multiselect="false" size="1"  value="{!NewBusIncentiveSelect}">
+                                <apex:selectOptions value="{!NewBusIncentiveOptions}">
+                                </apex:selectOptions>
+                            </apex:selectList> 
+                        </apex:panelGroup>
+                                
+                        <apex:panelGroup style="float:right">
+                            <apex:outputLabel value="Net Option To Purchase"/>
+                           <apex:InputText id="OTP" value="{!OTP}" style="width: 142px; height: 16px" onchange="OTPFee(this.value);"/>
+                        </apex:panelGroup>
+                        
+                        <!--
+                        <apex:panelGroup style="float:right" rendered="{!displayterminationdate}">
+                            <apex:outputLabel value="Termination Date  "/>
+                            <apex:input type="date" id="quoteacceptancedate" value="{!AcceptanceDate}"/>                           
+                        </apex:panelGroup>
+                        -->
+                        
+                        <apex:panelGroup />
+                           <apex:panelGroup />     
+                        <div style="page-break-after:always;"></div>
+                        <apex:panelGroup style="float:right">
+                           <!-- <apex:outputLabel value="" />
+                            <apex:OutputText value="£{0,number,###,##0.00}">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <apex:param value="{!SaleAmount}" />
+                            </apex:OutputText>  -->  
+                        </apex:panelGroup> 
+                                               
+                        <apex:panelGroup style="float:right">
+                          <!--  <apex:outputLabel style="white-space: nowrap;" value="%"/>
+                            <apex:OutputText value="{!RebateRentalPercentage}"/> -->
+                        </apex:panelGroup>
+                        
+                        <apex:panelGroup style="float:right">
+                          <!--  <apex:outputLabel style="white-space: nowrap;" value=""/>
+                            <apex:OutputText value="£{0,number,###,##0.00}">
+                                <apex:param value="{!RebateRentalAmount}" />
+                            </apex:OutputText> -->
+                        </apex:panelGroup>
+                        
+                        <!--
+                        <apex:panelGroup rendered="false">
+                            <apex:outputLabel >Quote Type</apex:outputLabel>
+                            <apex:selectList styleClass="slds-select" multiselect="false" size="1" value="{!QuteSelect}" >
+                                <apex:selectOptions value="{!QuoteTypeOptions}">
+                                </apex:selectOptions>
+                            </apex:selectList>
+                        </apex:panelGroup>
+                        -->
+                        
+                     </apex:panelGrid> 
+                                      
+                </apex:pageBlock>
+                
+               <apex:pageblock title="ASSET INFORMATION" id="equipmentDetail" >
+                    
+                    <apex:pageblockSection collapsible="False">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel >Total number of equipment : </apex:outputLabel>
+                            <apex:outputText >{!noOfEquipments}</apex:outputText>
+                        </apex:pageBlockSectionItem>
+                        
+                    </apex:pageblockSection>
+                    
+                 
+                        <apex:pageBlockTable value="{!equipmentDetails}" var="accWrap" id="table" title="All CEP">
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:inputCheckbox onclick="selectAllCheckboxes(this,'inputId')"/>
+                                </apex:facet>
+                                <apex:inputCheckbox value="{!accWrap.isSelected}" id="inputId"/>
+                            </apex:column>
+                            <apex:column value="{!accWrap.eqp.Name}" />
+                            <apex:column value="{!accWrap.eqp.cllease__Equipment_Description__c}" />
+                            <apex:column value="{!accWrap.eqp.cllease__Equipment_Serial_Number__c}" />
+                            <apex:column value="{!accWrap.eqp.Registration_Number__c}" />
+                            <apex:column value="{!accWrap.eqp.Net_Asset_Cost__c}" />
+                            <apex:column value="{!accWrap.eqp.VAT__c}" />
+                            <apex:column value="{!accWrap.eqp.Total_Cost__c}" /> 
+                            <apex:column headerValue="Breakdown per Asset" >
+                                <apex:outputText value="{0,number,###,##0.00}" id="BDA" rendered="{!If(accWrap.isSelected ,true,false)}">
+                                    <apex:param value="{!accWrap.eqp.Breakdown_Per_Asset__c}"/> 
+                                </apex:outputText>
+                            </apex:column>
+                        </apex:pageBlockTable>
+                  
+                </apex:pageblock>
+                
+             <apex:outputpanel id="assetsale">    
+                <apex:pageblock title="ASSET SALE INFORMATION" rendered="{!displayassetsale}">
+                    
+                    <apex:pageblockSection collapsible="False">  
+
+  
+                       <!--- <apex:pageBlockSectionItem >
+                            <apex:outputLabel > Third Party</apex:outputLabel>
+                            <apex:inputField value="{!termContract.cllease__Account__c}" onchange="quoteamount();" >    
+                            </apex:inputField>
+                        </apex:pageBlockSectionItem>  ---->            
+                        
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel > Net 3rd Party Sale Price</apex:outputLabel>
+                            <apex:InputText value="{!NetAssetCostSale}" onchange="saleamount();"/>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel >Rental Rebate %</apex:outputLabel>
+                            <apex:InputText value="{!RebateRentalPercentage}" onchange="quoteamount();"/>
+                        </apex:pageBlockSectionItem>                                                           
+                        
+                        <apex:pageBlockSectionItem >
+                          <!--  <apex:outputLabel > Rebate of Rentals</apex:outputLabel>
+                            <apex:OutputText value="£{0,number,###,##0.00}">
+                                <apex:param value="{!RebateRentalAmount}" /> 
+                            </apex:OutputText> --> 
+                        </apex:pageBlockSectionItem>   
+                    </apex:pageblockSection>
+                
+                    <apex:commandButton value="Generate Asset Sale" action="{!initiateAssetSale}" reRender="showmsg,termquote,leaseinfo,assetsale" disabled="{!accepttermination}" status="acceptquotestatus"/>  
+                                        
+                </apex:pageblock>
+              </apex:outputpanel>  
+                
+                
+                <apex:pageblock title="TERMINATION QUOTE" id="termquote" mode="inlineEdit">
+                    <apex:pageBlockButtons location="bottom">
+                        <apex:commandButton value="(Re)Calculate Quotes" action="{!generateQuoteFigures}" reRender="showmsg,termquote,equipmentDetail,leaseinfo,settleinfo" status="calculatequotestatus"/>
+                        <apex:commandButton value="Save" action="{!saveQuoteDetails}" reRender="showmsg,termquote,leaseinfo,settleinfo,assetsale" disabled="{!savetermination}" status="savequotestatus"/>
+                        <apex:commandButton value="Accept Quote" action="{!acceptTerminationQuote}" reRender="showmsg,termquote,leaseinfo" disabled="{!accepttermination}" status="acceptquotestatus"/>
+                    </apex:pageBlockButtons>  
+                                    
+                        <apex:pageMessages id="showmsg"> </apex:pageMessages>
+                        
+                    <apex:actionFunction name="quotetype" action="{!quotechange}" reRender="settleinfo,termquote" />
+                    
+                    <table class="list" border="0" cellpadding="0" cellspacing="0">
+                        <tr class="headerRow  ">
+                            
+                            <th class="headerRow ">
+                                
+                            </th>
+                            <th class="headerRow ">
+                                <apex:inputCheckbox value="{!rowwrapperList[0].isSelectedQuote}" rendered="{!rowwrapperList.size == 4}" onchange="checkboxCtr(this,'Standardquote'); checkbox()" id="Standardquote" disabled="False"/>
+                                Standard 
+                            </th>
+                            <th class="headerRow ">
+                                <apex:inputCheckbox value="{!rowwrapperList[1].isSelectedQuote}" rendered="{!rowwrapperList.size == 4}" onchange="checkboxCtr(this,'NewBusinessquote'); checkbox()" id="NewBusinessquote" disabled="false"/>
+                                New Business
+                            </th>
+                            <th class="headerRow ">
+                                <apex:inputCheckbox value="{!rowwrapperList[2].isSelectedQuote}" rendered="{!rowwrapperList.size == 4}" onchange="checkboxCtr(this,'Otherquote'); checkbox()" id="Otherquote" disabled="false"/>
+                                Other
+                            </th>
+                            <th class="headerRow ">
+                                <apex:inputCheckbox value="{!rowwrapperList[3].isSelectedQuote}" rendered="{!rowwrapperList.size == 4}" onchange="checkboxCtr(this,'NBVquote'); checkbox()" id="NBVquote" disabled="false"/>
+                                NBV
+                            </th>
+                        </tr>
+                        
+                        <apex:repeat value="{!rowLabelsList}" var="row">
+                        <tr>
+                             <td >
+                                 <apex:outputText value="{!row.rowLabel}" ></apex:outputText>   
+                            </td>
+                           <td>
+                                 <apex:outputField value="{!rowwrapperList[0].terQuote.Discount1__c}" rendered="{!IF(row.rowLabel == 'Discount %',true,false)}"></apex:outputField>
+                                 <apex:outputField value="{!rowwrapperList[0].terQuote.Future_Rentals__c}" rendered="{!IF(row.rowLabel == 'Future Rentals',true,false)}"></apex:outputField>
+                                 <apex:outputField value="{!rowwrapperList[0].terQuote.Discount__c}" rendered="{!IF(row.rowLabel == 'Discount',true,false)}"></apex:outputField>
+                                 <apex:outputText value="£{0,number,###,##0.00}" rendered="{!IF(row.rowLabel == 'Net Settlement Figure',true,false)}" style="font-weight:bold;"> <apex:param value="{!rowwrapperList[0].terQuote.Settlement_Figure__c}"/></apex:outputText>
+                                 <apex:outputField value="{!rowwrapperList[0].terQuote.Option_To_Purchase__c}" rendered="{!IF(row.rowLabel == 'Net Option To Purchase',true,false)}"/>
+                                 <apex:outputField value="{!rowwrapperList[0].terQuote.Rebate_of_Rentals__c}" rendered="{!IF(row.rowLabel == 'Net Rebate of Rentals',true,false)}"></apex:outputField>
+                                 <apex:outputField value="{!rowwrapperList[0].terQuote.Total_Net_Settlement__c}" rendered="{!IF(row.rowLabel == 'Total Net Settlement',true,false)}"></apex:outputField>
+                                 <apex:outputField value="{!rowwrapperList[0].terQuote.VAT_On_Settlement__c}" rendered="{!IF(row.rowLabel == 'VAT On Settlement',true,false)}"></apex:outputField>
+                                 <apex:outputField value="{!rowwrapperList[0].terQuote.Total_Gross_Settlement__c}" rendered="{!IF(row.rowLabel == 'Total Gross Settlement',true,false)}"></apex:outputField>
+                                 <apex:outputText value="£{0,number,###,##0.00}" rendered="{!IF(row.rowLabel == 'Gross Arrears',true,false)}" style="color:{!IF(rowwrapperList[0].terQuote.Arrears__c > 0, 'red', 'black')};"> <apex:param value="{!rowwrapperList[0].terQuote.Arrears__c}"/> </apex:outputText>
+                                 <apex:outputText value="£{0,number,###,##0.00}" rendered="{!IF(row.rowLabel == 'BALANCE TO PAY',true,false)}" style="font-weight:bold;"> <apex:param value="{!rowwrapperList[0].terQuote.Balance_to_Pay__c}"/> </apex:outputText>
+                                 <apex:outputText value="£{0,number,###,##0.00}" rendered="{!IF(row.rowLabel == 'Profit / Loss',true,false)}" style="color:{!IF(rowwrapperList[0].terQuote.Profit_Loss__c < 0, 'red', 'black')};"> <apex:param value="{!rowwrapperList[0].terQuote.Profit_Loss__c}"/> </apex:outputText>
+                                 <apex:outputField value="{!rowwrapperList[0].terQuote.New_Business_Incentive__c}" rendered="{!IF(row.rowLabel == 'New Business Incentive',true,false)}"></apex:outputField>
+
+                             </td>
+                            <td>
+                                 <apex:outputField value="{!rowwrapperList[1].terQuote.Discount1__c}" rendered="{!IF(row.rowLabel == 'Discount %',true,false)}"></apex:outputField>
+                                 <apex:outputField value="{!rowwrapperList[1].terQuote.Future_Rentals__c}" rendered="{!IF(row.rowLabel == 'Future Rentals',true,false)}"></apex:outputField>
+                                 <apex:outputField value="{!rowwrapperList[1].terQuote.Discount__c}" rendered="{!IF(row.rowLabel == 'Discount',true,false)}"></apex:outputField>
+                                 <apex:outputText value="£{0,number,###,##0.00}" rendered="{!IF(row.rowLabel == 'Net Settlement Figure',true,false)}" style="font-weight:bold;"> <apex:param value="{!rowwrapperList[1].terQuote.Settlement_Figure__c}"/></apex:outputText>
+                                 <apex:outputField value="{!rowwrapperList[1].terQuote.Option_To_Purchase__c}" rendered="{!IF(row.rowLabel == 'Net Option To Purchase',true,false)}"/>
+                                 <apex:outputField value="{!rowwrapperList[1].terQuote.Rebate_of_Rentals__c}" rendered="{!IF(row.rowLabel == 'Net Rebate of Rentals',true,false)}"></apex:outputField>
+                                 <apex:outputField value="{!rowwrapperList[1].terQuote.Total_Net_Settlement__c}" rendered="{!IF(row.rowLabel == 'Total Net Settlement',true,false)}"></apex:outputField>
+                                 <apex:outputField value="{!rowwrapperList[1].terQuote.VAT_On_Settlement__c}" rendered="{!IF(row.rowLabel == 'VAT On Settlement',true,false)}"></apex:outputField>
+                                 <apex:outputField value="{!rowwrapperList[1].terQuote.Total_Gross_Settlement__c}" rendered="{!IF(row.rowLabel == 'Total Gross Settlement',true,false)}"></apex:outputField>
+                                 <apex:outputText value="£{0,number,###,##0.00}" rendered="{!IF(row.rowLabel == 'Gross Arrears',true,false)}" style="color:{!IF(rowwrapperList[1].terQuote.Arrears__c > 0, 'red', 'black')};"> <apex:param value="{!rowwrapperList[1].terQuote.Arrears__c}"/> </apex:outputText>
+                                 <apex:outputText value="£{0,number,###,##0.00}" rendered="{!IF(row.rowLabel == 'BALANCE TO PAY',true,false)}" style="font-weight:bold;"> <apex:param value="{!rowwrapperList[1].terQuote.Balance_to_Pay__c}"/> </apex:outputText>
+                                 <apex:outputText value="£{0,number,###,##0.00}" rendered="{!IF(row.rowLabel == 'Profit / Loss',true,false)}" style="color:{!IF(rowwrapperList[1].terQuote.Profit_Loss__c < 0, 'red', 'black')};"> <apex:param value="{!rowwrapperList[1].terQuote.Profit_Loss__c}"/> </apex:outputText>
+                                 <apex:outputField value="{!rowwrapperList[1].terQuote.New_Business_Incentive__c}" rendered="{!IF(row.rowLabel == 'New Business Incentive',true,false)}"></apex:outputField>
+
+                             </td>
+                            <td>
+                                 <apex:outputField value="{!rowwrapperList[2].terQuote.Discount1__c}" rendered="{!IF(row.rowLabel == 'Discount %',true,false)}"></apex:outputField>
+                                 <apex:outputField value="{!rowwrapperList[2].terQuote.Future_Rentals__c}" rendered="{!IF(row.rowLabel == 'Future Rentals',true,false)}"></apex:outputField>
+                                 <apex:outputField value="{!rowwrapperList[2].terQuote.Discount__c}" rendered="{!IF(row.rowLabel == 'Discount',true,false)}"></apex:outputField>
+                                 <apex:outputText value="£{0,number,###,##0.00}" rendered="{!IF(row.rowLabel == 'Net Settlement Figure',true,false)}" style="font-weight:bold;"> <apex:param value="{!rowwrapperList[2].terQuote.Settlement_Figure__c}"/></apex:outputText>
+                                 <apex:outputField value="{!rowwrapperList[2].terQuote.Option_To_Purchase__c}" rendered="{!IF(row.rowLabel == 'Net Option To Purchase',true,false)}"/>
+                                 <apex:outputField value="{!rowwrapperList[2].terQuote.Rebate_of_Rentals__c}" rendered="{!IF(row.rowLabel == 'Net Rebate of Rentals',true,false)}"></apex:outputField>
+                                 <apex:outputField value="{!rowwrapperList[2].terQuote.Total_Net_Settlement__c}" rendered="{!IF(row.rowLabel == 'Total Net Settlement',true,false)}"></apex:outputField>
+                                 <apex:outputField value="{!rowwrapperList[2].terQuote.VAT_On_Settlement__c}" rendered="{!IF(row.rowLabel == 'VAT On Settlement',true,false)}"></apex:outputField>
+                                 <apex:outputField value="{!rowwrapperList[2].terQuote.Total_Gross_Settlement__c}" rendered="{!IF(row.rowLabel == 'Total Gross Settlement',true,false)}"></apex:outputField>
+                                 <apex:outputText value="£{0,number,###,##0.00}" rendered="{!IF(row.rowLabel == 'Gross Arrears',true,false)}" style="color:{!IF(rowwrapperList[2].terQuote.Arrears__c > 0, 'red', 'black')};"> <apex:param value="{!rowwrapperList[2].terQuote.Arrears__c}"/> </apex:outputText>
+                                 <apex:outputText value="£{0,number,###,##0.00}" rendered="{!IF(row.rowLabel == 'BALANCE TO PAY',true,false)}" style="font-weight:bold;"> <apex:param value="{!rowwrapperList[2].terQuote.Balance_to_Pay__c}"/> </apex:outputText>
+                                 <apex:outputText value="£{0,number,###,##0.00}" rendered="{!IF(row.rowLabel == 'Profit / Loss',true,false)}" style="color:{!IF(rowwrapperList[2].terQuote.Profit_Loss__c < 0, 'red', 'black')};"> <apex:param value="{!rowwrapperList[2].terQuote.Profit_Loss__c}"/> </apex:outputText>
+                                 <apex:outputField value="{!rowwrapperList[2].terQuote.New_Business_Incentive__c}" rendered="{!IF(row.rowLabel == 'New Business Incentive',true,false)}"></apex:outputField>
+
+                             </td>
+                            <td>
+                                 <apex:outputField value="{!rowwrapperList[3].terQuote.Discount1__c}" rendered="{!IF(row.rowLabel == 'Discount %',true,false)}"></apex:outputField>
+                                 <apex:outputField value="{!rowwrapperList[3].terQuote.Future_Rentals__c}" rendered="{!IF(row.rowLabel == 'Future Rentals',true,false)}"></apex:outputField>
+                                 <apex:outputField value="{!rowwrapperList[3].terQuote.Discount__c}" rendered="{!IF(row.rowLabel == 'Discount',true,false)}"></apex:outputField>
+                                 <apex:outputText value="£{0,number,###,##0.00}" rendered="{!IF(row.rowLabel == 'Net Settlement Figure',true,false)}" style="font-weight:bold;"> <apex:param value="{!rowwrapperList[3].terQuote.Settlement_Figure__c}"/></apex:outputText>
+                                 <apex:outputField value="{!rowwrapperList[3].terQuote.Option_To_Purchase__c}" rendered="{!IF(row.rowLabel == 'Net Option To Purchase',true,false)}">
+                                 <apex:inlineEditSupport showOnEdit="saveButton" event="ondblclick">
+                                     </apex:inlineEditSupport> 
+                                 </apex:outputField>
+                                 <apex:outputField value="{!rowwrapperList[3].terQuote.Rebate_of_Rentals__c}" rendered="{!IF(row.rowLabel == 'Net Rebate of Rentals',true,false)}"></apex:outputField>
+                                 <apex:outputField value="{!rowwrapperList[3].terQuote.Total_Net_Settlement__c}" rendered="{!IF(row.rowLabel == 'Total Net Settlement',true,false)}"></apex:outputField>
+                                 <apex:outputField value="{!rowwrapperList[3].terQuote.VAT_On_Settlement__c}" rendered="{!IF(row.rowLabel == 'VAT On Settlement',true,false)}"></apex:outputField>
+                                 <apex:outputField value="{!rowwrapperList[3].terQuote.Total_Gross_Settlement__c}" rendered="{!IF(row.rowLabel == 'Total Gross Settlement',true,false)}"></apex:outputField>
+                                 <apex:outputText value="£{0,number,###,##0.00}" rendered="{!IF(row.rowLabel == 'Gross Arrears',true,false)}" style="color:{!IF(rowwrapperList[3].terQuote.Arrears__c > 0, 'red', 'black')};"> <apex:param value="{!rowwrapperList[3].terQuote.Arrears__c}"/> </apex:outputText>
+                                 <apex:outputText value="£{0,number,###,##0.00}" rendered="{!IF(row.rowLabel == 'BALANCE TO PAY',true,false)}" style="font-weight:bold;"> <apex:param value="{!rowwrapperList[3].terQuote.Balance_to_Pay__c}"/> </apex:outputText>
+                                 <apex:outputText value="£{0,number,###,##0.00}" rendered="{!IF(row.rowLabel == 'Profit / Loss',true,false)}" style="color:{!IF(rowwrapperList[3].terQuote.Profit_Loss__c < 0, 'red', 'black')};"> <apex:param value="{!rowwrapperList[3].terQuote.Profit_Loss__c}"/> </apex:outputText>
+                                 <apex:outputField value="{!rowwrapperList[3].terQuote.New_Business_Incentive__c}" rendered="{!IF(row.rowLabel == 'New Business Incentive',true,false)}"></apex:outputField>
+
+                             </td> 
+                            </tr>  
+                        </apex:repeat>
+                    </table>
+                </apex:pageblock>
+            </apex:form>
+        </div>
+    </apex:page>

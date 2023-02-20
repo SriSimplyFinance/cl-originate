@@ -1,0 +1,90 @@
+div[pagename = "ManagingHouseholdsAndAffiliations"]{
+   background: #ffffff;
+   height: 100%;
+   position: absolute;
+   top: 0;
+   bottom: 0;
+   left: 0;
+   right: 0;
+}
+
+div[pagename = "ManagingHouseholdsAndAffiliations"] > .nx-page-content > .sk-grid{
+    height: 100%;
+}
+
+.account-relationships.nx-skootable.nx-editor{
+    margin-bottom: 0px!important;
+    margin-left: 5px;
+}
+
+.account-relationships .nx-editor-contents .nx-list-footer{
+    display: none;
+}
+
+.account-relationships table.nx-skootable-data thead tr th {    
+   display: none!important;
+}
+
+.account-relationships table.nx-skootable-data tbody tr > td {  
+    border-style: solid;
+    border-width: 1px 1px 5px 1px;
+    border-color: #ebeef0 !important;
+}
+
+.account-relationships table.nx-skootable-data tbody tr.highlighted-row td {    
+   border-bottom-color: #1cbdd4!important;
+}
+
+.account-relationships table.nx-skootable-data tbody tr td {    
+   border-bottom-color: #f5f5f5!important;
+}
+
+.account-relationships .nx-editor-header{
+   display:none; 
+}
+
+.account-relationships .nx-editor-contents{
+    margin-top:0px;
+}
+
+#related-accounts-right-panel{
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    margin-top: 0px;
+    background: #ffffff;
+}
+
+#related-accounts-right-panel div.nx-basicfieldeditor{
+    overflow-y: auto;
+}
+
+#related-accounts-right-panel div.nx-basicfieldeditor-item{
+    border-bottom-color: #fff;
+}
+
+.selected-account-details-editor{
+    border-style: solid;
+    border-width: 0px 1px 4px 1px;
+    border-color: #ebeef0 !important;
+}
+
+#detail-button-panel .view-btn{
+    background: #1cbdd4;
+}
+#selected-account-title-wrapper .sk-wrapper .nx-editor-header .nx-editor .nx-fieldtext a{
+    color: #ffffff;
+    text-decoration:none!important;
+    cursor: default!important;
+}
+#related-accounts-left-panel{
+    padding-right: 4px;
+}
+.account-relationship-list-wrapper{
+    overflow-y: auto;
+}
+.add-relation-button-container .nx-header-right {
+    float: none;
+    text-align: center;
+    margin-top: 10px;
+}

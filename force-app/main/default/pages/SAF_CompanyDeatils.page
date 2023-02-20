@@ -1,0 +1,220 @@
+<apex:page controller="SAF_CompanyDeatils" sidebar="false" cache="true" action="{!SAF_CompanyDeatils}">   
+    <apex:form >  
+        <apex:pageBlock title="Customer Relationships" id="block">
+          <apex:pagemessages id="msg"/>
+            <!-- title="Related contacts for Customer : {!CompanyName} - {!CompanyId}" -->
+            <!--<apex:pageBlockSection columns="1">    -->   
+            &nbsp;&nbsp;&nbsp;<apex:outputLabel style="font-weight:900;">{!CompanyName} - {!CompanyId}</apex:outputLabel> <br/>
+            &nbsp;&nbsp;&nbsp;<apex:outputLabel style="font-weight:900;">Registered Address&nbsp;: {!CustAddress}</apex:outputLabel><br/>
+            &nbsp;&nbsp;&nbsp;<apex:outputLabel style="font-weight:900;" Rendered="{!IF(ConnectionType == null, false, true)}">Connection Type &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {!ConnectionType}</apex:outputLabel><br/> <br/>
+            <!--</apex:pageBlockSection>-->
+        
+            <!-- Spinner starts -->
+            <apex:actionStatus id="spinnerStatus">
+                <apex:facet name="start">
+                    <div class="spinnerBg" />
+                    <div class="spinner" />
+                </apex:facet>
+            </apex:actionStatus>
+            <!-- Spinner ends-->
+            <apex:outputPanel layout="block" styleClass="customBlack">
+                <apex:pageBlockSection columns="1" title="Group Companies" showHeader="true">
+                <!--rendered="{!disable}" action="{!createCustomers}" -->
+                    <apex:commandButton disabled="{!IF(GroupParentsmessage == null, false, true)}" value="Create Customers" status="spinnerStatus" action="{!createRelatedGroupCustomers}" rerender="msg,grpComp,block" oncomplete="show()"/>{!GroupParentsmessage}
+                    <apex:pageBlockTable rendered="{!IF(GroupParentsmessage == null, true, false)}" value="{!CompgroupParents}" id="grpComp" title="Group Companies" var="item" style="width:1250px">
+                    <!-- <apex:column headerValue="File Name">
+                       <apex:outputlink value="/{!item.Id}">{!item.Name}</apex:outputlink>
+                    </apex:column>
+                     <apex:column headervalue="Select">
+                                <apex:inputcheckbox disabled="{!IF(item.AccountId == null, false, true)}" />
+                            </apex:column>-->
+                        <apex:column headervalue="Select">
+                            <apex:inputcheckbox value="{!item.ischecked}" disabled="{!IF(item.companyId != null && item.AccountId == null, false, true)}"/>
+                        </apex:column>
+                        <apex:column headerValue="Customer Id">
+                           <apex:outputlink value="/{!item.AccountId}" target="_blank">{!item.AccountId}</apex:outputlink>
+                        </apex:column>
+                        <apex:column headerValue="Co Reg No"  value="{!item.companyId}"/>
+                        <apex:column headerValue="Name"  value="{!item.name}"/>
+                        <apex:column headerValue="UBO">
+                          <apex:inputCheckbox value="{!item.isUltimateParent}" disabled="true"/>
+                        </apex:column>  
+                        <apex:column headerValue="Parent Company">
+                          <apex:inputCheckbox value="{!item.isImmediateParent}" disabled="true"/>
+                        </apex:column>
+                         <apex:column headerValue="Connection Type" value="{!item.ConnectionType}"/>  
+                        <apex:column headerValue="Degree of Seperation" value="{!item.degreeOfSeparation}"/>
+                        <!--<apex:column headerValue="New Customers">
+                                    <apex:commandButton value="Create Customer" disabled="{!IF(item.AccountId == null, false, true)}" />
+                                    <!-- action="https://testsso--safdev--genesisextn.cs88.visual.force.com/apex/NewApplication?ent=01I0O000000vYCu&RecordType=0120O000000BRqrQAG&retURL=%2Fa7F%2Fo&save_new=1&sfdc.override=1"-->
+                                <!--</apex:column>-->
+                    </apex:pageBlockTable>
+                
+                </apex:pageBlockSection>  
+                
+                <!-- Merging Related Contacts page to this form - Starts -->
+                
+                <!--<apex:outputPanel layout="block" styleClass="customBlack">-->
+                <apex:pageBlockSection columns="1" title="Directors" showHeader="true" collapsible="true">
+                    <!--<font color="black">
+                        <apex:facet name="header">
+                            <span style="color:black">Directors</span>
+                        </apex:facet> 
+                    </font> -->    
+                    <apex:commandButton disabled="{!IF(officersmessage == null, false, true)}" value="Create Contact" status="spinnerStatus"  action="{!RelConcreateContacts}" rerender="msg,directorInfo,block" oncomplete="ConRelshow()"/>{!officersmessage}
+                    <!-- action="https://testsso--safdev--genesisextn.cs88.visual.force.com/apex/NewApplication?ent=01I0O000000vYCu&RecordType=0120O000000BRqrQAG&retURL=%2Fa7F%2Fo&save_new=1&sfdc.override=1"-->
+                    
+                    <apex:pageBlockTable rendered="{!IF(officersmessage == null, true, false)}" id="directorInfo" value="{!officers}" var="itemRelCon" style="width:1250px">
+                           <!-- <apex:column headerValue="File Name">
+                               <apex:outputlink value="/{!item.Id}">{!item.Name}</apex:outputlink>
+                            </apex:column>-->
+                        <apex:column headervalue="Select">
+                            <apex:inputcheckbox disabled="{!IF(itemRelCon.officerId != null && itemRelCon.ContactId== null, false, true)}" value="{!itemRelCon.ischecked}"/>
+                        </apex:column>
+                        <apex:column headerValue="Contact Id">
+                           <apex:outputlink value="/{!itemRelCon.ContactId}" target="_blank">{!itemRelCon.ContactId}</apex:outputlink>
+                        </apex:column>
+                        <apex:column headerValue="Type"  value="{!itemRelCon.type}"/>
+                        <apex:column headerValue="Officer Id"  value="{!itemRelCon.officerId}"/>
+                        <!--<apex:column headerValue="Company Name" value="{!itemRelCon.company.name}"/>-->
+                        <apex:column headerValue="First Name"  value="{!itemRelCon.person.firstName}"/>
+                        <!--<apex:column headerValue="Middle Name"  value="{!itemRelCon.person.middleName}"/>-->
+                        <apex:column headerValue="Last Name" value="{!itemRelCon.person.lastName}"/>
+                        <!--<apex:column headerValue="Status" value="{!itemRelCon.appointments[0].status}"/>-->
+                        <apex:column headerValue="DOB" value="{!itemRelCon.person.dateOfBirth.monthYear}" />
+                        <apex:column headerValue="OfficialRole - Position" value="{!itemRelCon.appointments[0].officialRole} - {!itemRelCon.appointments[0].selfDescribedPosition}" />
+                        <apex:column headerValue="Is Shareholder">
+                         <apex:inputCheckbox value="{!itemRelCon.isShareholder}" disabled="true"/>
+                        </apex:column>
+                         <apex:column headerValue="Immediate Director">
+                         <apex:inputCheckbox value="{!itemRelCon.isDirector}" disabled="true"/>
+                        </apex:column>
+                         <apex:column headerValue="Relationship" value="{!itemRelCon.Relationship}"/>  
+                    </apex:pageBlockTable>   
+                </apex:pageBlockSection> 
+                <!--</apex:outputPanel>-->
+                <!-- Merging Related Contacts page to this form - Ends-->
+                
+                <!-- Merging Related Contacts page to this form - Starts -->
+              
+                 <apex:pageBlockSection columns="1" title="Shareholder Information  (Total shareholding % 25 and above)" showHeader="true">   
+                    <apex:commandButton disabled="{!IF(shareholdersmessage == null, false, true)}" value="Create Companies/Contacts" status="spinnerStatus"  action="{!CreateShareholders}" rerender="msg,shareholderInfo,block" oncomplete="RelConShow()"/>{!shareholdersmessage}
+                    <apex:pageBlockTable rendered="{!IF(shareholdersmessage == null, true, false)}" id="shareholderInfo" value="{!shareholder}" title="Shareholder Information" var="item" style="width:1250px">
+                        <apex:column headervalue="Select"> <!--{!IF(item.exactMatchType== 'person' && item.ContactId == null && (item.exactMatchType != null && item.exactMatches[0].person != null && item.exactMatches[0].person.officerId != null), false, true)}-->
+                           <!-- <apex:inputcheckbox disabled="{!IF(item.ContactId == null && item.exactMatchType != null && item.exactMatchType == 'company' && (item.exactMatchType != null && item.exactMatches[0].company != null && item.exactMatches[0].company.companyId != null), false, true)}" value="{!item.ischecked}"/>-->
+                        <!--<apex:inputcheckbox disabled="{!IF(item.ContactId == null && item.exactMatchType != null && ((item.exactMatchType != null && item.exactMatches[0].person != null && item.exactMatches[0].person.officerId != null) || (item.exactMatchType != null && item.exactMatches[0].company != null && item.exactMatches[0].company.companyId != null)), false, true)}" value="{!item.ischecked}"/>-->
+                        <apex:inputcheckbox disabled="{!IF(item.ContactId == null, false, true)}" value="{!item.ischecked}"/>
+                      
+                        </apex:column>
+                        <apex:column headerValue="Contact Id">
+                           <apex:outputlink value="/{!item.ContactId}" target="_blank">{!item.ContactId}</apex:outputlink>
+                        </apex:column>
+                        <!--<apex:column headerValue="Company Id" rendered="{!IF(item.exactMatchType != null && item.exactMatches[0].company != null, true, false)}" value="{!item.exactMatches[0].company.companyId}"/>
+                        <apex:column headerValue="Officer Id" rendered="{!IF(item.exactMatchType != null && item.exactMatches[0].person != null, true, false)}" value="{!item.exactMatches[0].person.officerId}"/>-->
+                        <apex:column headerValue="Shareholder Id" value="{!item.ShareholderId}"/>                     
+                        <apex:column headerValue="Shareholder Of"  value="{!item.sourceName}"/>
+                        <apex:column headerValue="Exact Match Type"  value="{!item.exactMatchType}"/>
+                        <apex:column headerValue="Total Shareholding" value="{!item.totalShareholding}"/>              
+                        <apex:column headerValue="Total Shareholding Percentage %" value="{!item.totalShareholdingPercentage}"/>
+                        <apex:column headerValue="Not Matched (Suspected Type)" value="{!item.notMatched.suspectedType}"/>
+                        <apex:column headerValue="Shareholder Relationship" value="{!item.Relationship}"/>
+                    </apex:pageBlockTable>
+                <apex:pageBlockSection columns="1" title="Shareholder Information for UBO Company : {!UBOCompanyName}" showHeader="true" rendered="{!IF(UBOCompanyId == null, false, true)}">   
+                     <apex:commandButton value="Create Companies/Contacts" status="spinnerStatus" disabled="{!IF(UBOCompanymessage == null, false, true)}"  action="{!CreateUBOShareholders}" rerender="msg,UBOshareholderInfo,block" oncomplete="RelConShow()"/>{!UBOCompanymessage}
+                    <apex:pageBlockTable id="UBOshareholderInfo" rendered="{!IF(UBOCompanymessage == null, true, false)}" value="{!shareholderUBO}" title="Shareholder Information" var="item" style="width:1250px">
+                        <apex:column headervalue="Select">
+                           <apex:inputcheckbox disabled="{!IF(item.ContactId == null && item.exactMatchType != null && ((item.exactMatchType != null && item.exactMatches[0].person != null && item.exactMatches[0].person.officerId != null) || (item.exactMatchType != null && item.exactMatches[0].company != null && item.exactMatches[0].company.companyId != null)), false, true)}" value="{!item.ischecked}"/>
+                           <!--<apex:inputcheckbox disabled="{!IF(item.ContactId == null && item.exactMatchType != null && item.exactMatchType == 'company' && (item.exactMatchType != null && item.exactMatches[0].company != null && item.exactMatches[0].company.companyId != null) , false, true)}" value="{!item.ischecked}"/>-->
+                        </apex:column>
+                        <apex:column headerValue="Customer Id">
+                           <apex:outputlink value="/{!item.ContactId}" target="_blank">{!item.ContactId}</apex:outputlink>
+                        </apex:column>
+                        <apex:column headerValue="Shareholder Id" value="{!item.ShareholderId}"/>
+                        <!--<apex:column headerValue="Officer Id"  value="{!item.exactMatches[0].person.officerId}"/>-->
+                        <apex:column headerValue="Shareholder Of"  value="{!item.sourceName}"/>
+                        <apex:column headerValue="Exact Match Type"  value="{!item.exactMatchType}"/>
+                        <apex:column headerValue="Total Shareholding" value="{!item.totalShareholding}"/>              
+                        <apex:column headerValue="Total Shareholding Percentage %" value="{!item.totalShareholdingPercentage}"/>
+                        <apex:column headerValue="Not Matched (Suspected Type)" value="{!item.notMatched.suspectedType}"/>
+                        <apex:column headerValue="Shareholder Relationship" value="{!item.Relationship}"/>
+                    </apex:pageBlockTable>
+                </apex:pageBlockSection> 
+               </apex:pageBlockSection> 
+                <!-- Merging Related Contacts page to this form - Ends   -->
+                <!-- Diable the button Create customers   -->
+            <apex:pageBlockSection columns="1" title="Related Customers" showHeader="true">  
+                <apex:commandButton disabled="{!IF(comprelatedCompaniesmessage == null, true, true)}" value="Create Customers"  status="spinnerStatus" action="{!createRelatedCustomers}"  rerender="msg,relComp,block" oncomplete="show()"/>{!comprelatedCompaniesmessage}
+                <apex:pageBlockTable rendered="{!IF(comprelatedCompaniesmessage == null, true, false)}" value="{!comprelatedCompanies}" id="relComp" var="item" style="width:1250px">
+                   <!-- <apex:column headerValue="File Name">
+                       <apex:outputlink value="/{!item.Id}">{!item.Name}</apex:outputlink>
+                    </apex:column>
+                    <apex:column headervalue="Select">
+                                <apex:inputcheckbox disabled="{!IF(item.AccountId == null, false, true)}" />
+                            </apex:column>-->
+                    
+                    <apex:column headervalue="Select">
+                        <apex:inputcheckbox value="{!item.ischecked}" disabled="{!IF(item.companyId != null && item.AccountId == null, true, true)}"/>
+                    </apex:column>
+                    <apex:column headerValue="Customer Id">
+                       <apex:outputlink value="/{!item.AccountId}" target="_blank">{!item.AccountId}</apex:outputlink>
+                    </apex:column>
+                    <apex:column headerValue="Co Reg No"  value="{!item.companyId}"/>
+                    <apex:column headerValue="Official Status"  value="{!item.officialStatus}"/>
+                    <apex:column headerValue="Simplified Status"  value="{!item.simplifiedStatus}"/>
+                    <apex:column headerValue="Name"  value="{!item.name}" colspan="2"/>
+                    <apex:column headerValue="Confidence" value="{!item.confidence}"/>
+                    <apex:column headerValue="Name Similarity Score" value="{!item.nameSimilarityScore}"/>
+                    <apex:column headerValue="Mutual Major Shareholders"  value="{!item.mutualMajorShareholders.count}"/>
+                    <apex:column headerValue="Mutual Officers" value="{!item.mutualOfficers.count}"/>
+                    <!--  <apex:column headerValue="MutualAddresses"  value="{!item.mutualAddresses.count}"/>-->
+                    <apex:column headerValue="MutualInvestments" value="{!item.mutualInvestments.count}"/>
+                    <!--<apex:column headerValue="New Customers">
+                                <apex:commandButton value="Create Customer" disabled="{!IF(item.AccountId == null, false, true)}" />
+                                <!-- action="https://testsso--safdev--genesisextn.cs88.visual.force.com/apex/NewApplication?ent=01I0O000000vYCu&RecordType=0120O000000BRqrQAG&retURL=%2Fa7F%2Fo&save_new=1&sfdc.override=1"-->
+                            <!--</apex:column>-->
+                </apex:pageBlockTable>   
+            </apex:pageBlockSection> 
+        </apex:outputPanel> 
+        </apex:pageBlock> 
+        <!-- Style section -->
+        <style>
+            .spinnerBg
+            {
+                top:0%;
+                width: 100%;
+                height: 100%;
+                left:0;
+                position: absolute;
+                background-color: #000;
+                opacity: 0.2;
+                z-index: 999999;
+            }
+            .spinner
+            {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                <!-- http://upload.wikimedia.org/wikipedia/commons/e/ed/Cursor_Windows_Vista.gif-->
+                <!-- /img/loading32.gif-->
+                background-image: url("/img/loading32.gif");
+                background-size: 30px;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-position: center;
+                z-index: 9999999;
+                opacity: 1;
+            }
+            
+            .customBlack .pbSubheader
+            {
+                color:black !important;
+            }
+        </style> 
+    </apex:form> 
+    <script>
+    function updateMessage()
+    {
+        alert('Companies fetched successfully!');
+    }    
+    </script>    
+</apex:page>

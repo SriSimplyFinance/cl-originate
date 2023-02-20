@@ -1,0 +1,143 @@
+iframe {
+    border: 0px;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    background-color: #EBEEF0;
+    font: normal normal 400 12px Lato;
+    padding: 0 !important;
+    height: 100%;
+}
+
+body>.nx-page {
+    padding: 0;
+    background-color: #EBEEF0;
+}
+
+.nx-page {
+    padding: 0 0 0 0 !important;
+}
+
+.nx-pagetitle-maintitle {
+    padding: 0 0 0 6px;
+    font-size: 14px;
+}
+
+div[pagename ="AccountRelationDashboard"]{
+    position: absolute;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.account-dashboard-left-panel{
+    margin: 5px;
+}
+
+.account-dashboard-right-panel{
+    overflow-y: auto;
+}
+
+.account-dashboard-tabset{
+    height: 100%;
+}
+
+#document-iframe {
+    border: none;
+    height: calc(100% - 40px); /* 40px is the heights of the tabs panel*/
+    position:absolute;
+    right:0;
+    left:0;
+}
+
+#household-affiliations-panel{
+    height: calc(100% - 40px);
+}
+
+#household-affiliations-panel > .sk-grid > .sk-grid-division > .nx-include-panel{
+    height: 100%;
+}
+#account-relationship-graph-panel{
+    height: calc(100% - 40px);
+    overflow-y: auto;
+}
+.card-list-view {
+    display: flex;
+    flex-direction: row;
+    height: 60px;
+    vertical-align: middle;
+    margin-bottom: 5px; 
+}
+.card-list-view .left-sidebar {
+    width: 15px;
+    background: #d8dadd;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column; 
+}
+.card-list-view .left-sidebar .dot {
+    margin: 2px 0px 2px 0px;
+    border-radius: 50%;
+    width: 5px;
+    height: 5px;
+    background: #a5abb0; 
+}
+.card-list-view .content {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    height: 50%;
+    padding-left: 20px;
+    flex-grow: 11;
+    align-self: center;
+    justify-content: center; 
+}
+.card-list-view .content div {
+    margin-bottom: 5px; 
+}
+.card-list-view .action {
+    text-align: center;
+    flex-grow: 2;
+    flex-direction: row;
+    align-self: flex-end; 
+}
+.card-list-view .action .button {
+    cursor: pointer; 
+}
+.status-label {
+    font-weight: 400;
+    width: initial !important;
+    color: white;
+    border: 0 none #0070d2;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 5px 5px 5px 5px;
+    display: flex;
+    justify-content: center;
+    text-align: center; 
+}
+.status-label.accepted {
+    background: #48ce94; 
+}
+.status-label.expired {
+    background: #FF3333; 
+}
+.status-label.clear {
+    background: #e8e8e8;
+    color: black; 
+}
+.status-label.exception {
+    background: #ffa21d; 
+}
+.status-label.pending {
+    background: #e8e8e8;
+    color: black; 
+}

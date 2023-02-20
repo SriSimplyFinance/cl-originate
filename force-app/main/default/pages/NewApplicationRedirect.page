@@ -1,0 +1,4 @@
+<apex:page standardController="genesis__Applications__c" 
+    extensions="NewAppRedirectController" action="{!redirect}">
+  
+</apex:page>

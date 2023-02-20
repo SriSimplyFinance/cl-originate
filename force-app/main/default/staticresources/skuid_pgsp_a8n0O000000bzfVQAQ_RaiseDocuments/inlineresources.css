@@ -1,0 +1,55 @@
+.wrapper-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom:10;
+}
+
+.wrapper-title .nx-pagetitle-maintitle {
+    font: normal normal 700 14px Lato;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+}
+
+.wrapper-title_PS .nx-pagetitle-maintitle {
+    font: normal normal 700 14px Lato;
+    padding-top: 20px;
+    padding-bottom: 3px;
+    padding-left: 10px;
+}
+
+.wrapper-title_common .nx-pagetitle-maintitle {
+    font: normal normal 700 14px Lato;
+    padding-bottom: 3px;
+    padding-left: 10px;
+}
+
+
+.nx-basicfieldeditor-column .nx-basicfieldeditor-section-header {
+    /*padding: 8px;*/
+    border-bottom: 1px solid #ddd;
+    color: #009ddc;
+    text-decoration: none;
+    background: transparent;
+    border-bottom: 0 solid black;
+    color: #37444e;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    margin-top: 40px;
+}
+
+/*.highlight { */
+/*    background-color: red; */
+/*}*/
+
+.highlight td {
+    /*background-color: #ffe6e6 !important; For Red color*/
+    background-color: lightgoldenrodyellow !important;
+}
+
+/*.nx-button-list-config{*/
+/*    visibility: hidden;*/
+/*}*/

@@ -1,0 +1,158 @@
+#partyDetailPageId {
+    height: 848px;
+}
+
+body {
+    background-color: #ebeef0;
+}
+
+body > .nx-page {
+    padding: 0;
+}
+
+.image-button.money:after {
+    content: 'Loan Opportunities';
+}
+
+.image-button.credit-analysis:after {
+    content: 'Credit Analysis';
+}
+
+.image-button.financial-accounts:after {
+    content: 'Financial Analysis';
+}
+
+.image-button.finInstitution:after {
+    content: 'Financial Accounts';
+}
+
+.image-button.clockFire:after {
+    content: 'Relationship Covenants';
+}
+#credit-score-number-view {
+    width: 100%;
+    text-align: right;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    line-height: 70px;
+}
+
+#credit-score-number-view .credit-score-bg {
+    margin: 0 auto;
+    font-size: 48px;
+    color: white;
+    background-color: #48CE94;
+    padding-left: 12px;
+    padding-right: 12px;
+    display: inline-block;
+    height: 70px;
+    border-radius: 5px;
+    vertical-align: middle;
+}
+
+#credit-score-simple-view {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    margin-left: 15px;
+}
+
+#credit-score-simple-view .nx-editor-header,
+#credit-score-simple-view .nx-editor-contents {
+    margin: 0;
+}
+
+#credit-score-simple-view .nx-item {
+    white-space: nowrap;
+}
+
+#credit-score-simple-view .credit-score-row {
+    height: 20px;
+    margin-bottom: 5px;
+    line-height: 20px;
+}
+
+#credit-score-simple-view .credit-score-row .credit-score-value {
+    background-color: #7F7F7F;
+    color: white;
+    font-size: 11px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: 5px;
+    border-radius: 3px;
+    display: inline-block;
+    height: 20px;
+}
+
+#credit-score-simple-view .credit-score-row .credit-score-type {
+    display: inline-block;
+    height: 20px;
+}
+
+#credit-score-simple-view .nx-list-footer {
+    display: none;
+}
+
+#credit-report-summary .credit-report-summary-entry {
+    background-color: #1CBDD4;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    padding: 5px 12px;
+    border-radius: 5px;
+}
+
+#credit-report-summary .credit-report-summary-entry .nx-basicfieldeditor-item-label {
+    width: 80%;
+    color: white;
+}
+
+#credit-report-summary .credit-report-summary-entry .nx-field {
+    width: 20%;
+    text-align: right;
+}
+
+#credit-report-summary .credit-report-summary-entry .nx-field .nx-fieldtext {
+    background-color: white;
+    color: #1CBDD4;
+    width: 20px;
+    border-radius: 50%;
+    text-align: center;
+    display: inline-block;
+    font-weight: 700;
+}
+
+#credit-score-figure {
+    position: relative;
+    height: 60px;
+}
+
+#credit-score-figure .credit-score-colorbar {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    bottom: 30px;
+    right: 0;
+    background-color: red;
+}
+
+#credit-score-figure .credit-score-colorbar-tick {
+    position: absolute;
+    height: 25px;
+    width: 4px;
+    border: 1px solid #7F7F7F;
+    display: inline-block;
+}
+
+#credit-score-figure .credit-score-number-sm {
+    position: absolute;
+    background-color: #2D5074;
+    color: white;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+#credit-score-bar-wrapper {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}

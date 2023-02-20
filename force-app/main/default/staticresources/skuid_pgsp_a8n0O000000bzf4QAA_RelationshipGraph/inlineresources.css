@@ -1,0 +1,49 @@
+.relationship-graph-container{
+    background-color: #ffffff;
+}
+.link[active=false] {
+    fill: none;
+    stroke-width: 1px;
+}
+.link[active=true] {
+    fill: none;
+    stroke: #7F7F7F;
+    stroke-width: 2px; 
+    opacity: 0.5;
+}
+g.text-box[active=false]{
+	visibility: hidden; 
+}
+g.text-box[active=true]{
+	visibility: visible; 
+}
+
+.legend-box{
+	border: 1px solid #37444E;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	width: 130px;
+	position: absolute;
+	top: 6px;
+	right: 10px;
+}
+.legend{
+	width: 14px;
+	height: 14px;
+	display:inline-block;
+	margin: 3px;
+	border: 1px solid #7F7F7F;
+}
+.legend-text{
+	display: inline-block;
+	width: 78%;
+	position: relative;
+	top: -5px;
+	color: #37444E;
+	padding: 2px;
+	font-family: Lato;
+	font-weight: 400;
+	font-size: 12px;
+}

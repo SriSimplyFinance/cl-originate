@@ -1,0 +1,137 @@
+<apex:page Controller="SAF_DueDilSearch" sidebar="false" action="{!pageInit}" cache="true">
+    <apex:form > 
+        <script>
+            function enterPress(e)
+            {
+                if(e.keyCode==13)
+                {
+                    //if(e.preventDefault)
+                    { 
+                        //alert("Enter");
+                        //var searchButtonID = document.getElementById("{!$Component.frm.block.blockSection.oppnl.search}").id;
+                        searchFunction();
+                        //alert("Enter" + searchButtonID );
+                        alert("Enter");
+                        //document.getElementById(searchButtonID).click();
+                        return true;
+                    }
+                }        
+            }
+        </script>
+        <!--<form>
+            <apex:actionFunction action="{!test}" name="searchFunction" rerender="msg,block" oncomplete="alert('After apex method') ;"/>
+        </form>-->
+        <apex:pageBlock title="Customer Search Information from Duedil" id="block">
+         <apex:pageBlockSection columns="3" >   
+            <apex:outputPanel >
+                <apex:pagemessages id="msg"/>
+                <div class="row">
+                    <div class="col-md-6">
+                        <apex:outputText value="Customer Name/Company Reg no : "/>
+                        <apex:inputText value="{!customerName}" onkeypress="enterPress(event)"  /> 
+                        
+                        &nbsp;<apex:commandButton status="spinnerStatus" value="Search" action="{!search}" rerender="msg,block"/> 
+                        &nbsp;<apex:commandButton status="spinnerStatus" rendered="{!IF(Totalcount != null && Totalcount > 0, true, false)}" value="Create Customers" action="{!createCustomers}" rerender="msg,block" oncomplete="show()"/>
+                        &nbsp;&nbsp;&nbsp;<apex:commandButton status="spinnerStatus" rendered="{!disable}" value="<<<<" action="{!paginationFirst}" rerender="msg,block"/>
+                        <apex:commandButton status="spinnerStatus" rendered="{!disable}" value="<<" action="{!paginationPrevious}" rerender="msg,block"/>
+                        <apex:commandButton status="spinnerStatus" rendered="{!disable}" value=">>" action="{!paginationNext}" rerender="msg,block"/>
+                        <apex:commandButton status="spinnerStatus" rendered="{!disable}" value=">>>>" action="{!paginationLast}" rerender="msg,block"/>
+                        &nbsp;&nbsp;&nbsp;<apex:outputText value="Result : {!Totalcount}"/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <apex:outputText value="{!paginationStart} - {!paginationEnd}"/>
+                    </div>
+                
+                    <div class="col-md-6">
+                    <br/>
+                    <apex:outputPanel >
+                    <!-- Spinner starts -->
+                    <apex:actionStatus id="spinnerStatus">
+                        <apex:facet name="start">
+                            <div class="spinnerBg" />
+                            <div class="spinner" />
+                        </apex:facet>
+                    </apex:actionStatus>
+                    <!-- Spinner ends-->
+                    <apex:pageBlockTable value="{!customerInfo}" var="item" style="width:1200px">
+                        <!-- headervalue="Select"-->
+                        <apex:column >
+                            <apex:facet name="header">
+                                <apex:inputCheckbox id="mainBox" value="{!selectAll}">
+                                    <apex:actionSupport event="onclick" action="{!updateCheckBoxes}" rerender="msg,block"/>
+                                </apex:inputCheckbox>
+                            </apex:facet>
+                            <apex:inputcheckbox id="input" disabled="{!IF(item.AccountId == null, false, true)}" value="{!item.ischecked}"/>
+                        </apex:column>
+                        <apex:column headerValue="Co Reg No" value="{!item.companyId}"/>
+                        <apex:column headerValue="Name" value="{!item.name}"/>
+                        
+                        <apex:column headerValue="Customer Id">
+                           <apex:outputlink value="/{!item.AccountId}" target="_blank">{!item.AccountId}</apex:outputlink>
+                        </apex:column>
+                        <apex:column headerValue="Create Customer">
+                        <!-- image="{!URLFOR($Resource.clcommon__Add_Button_Green)}" value="Create Customer"-->
+                           <apex:commandButton status="spinnerStatus" value="Create Customer" disabled="{!IF(item.AccountId == null, false, true)}"  action="{!createSingleCustomer}"  rerender="msg,block" oncomplete="show()">
+                               <apex:param name="compId" value="{!item.companyId}" />
+                           </apex:commandButton>
+                        </apex:column>               
+                        <apex:column headerValue="Customer Info">                     
+                            <apex:commandlink action="/apex/SAF_CompanyDeatils?CompanyId={!item.companyId}&Companyname={!item.newname}" target="_blank">
+                                <apex:commandButton value="Get Company Info"/>
+                            </apex:commandLink>
+                        </apex:column>
+                         <apex:column headerValue="Applications">
+                         <!-- skuid__ui?page=' -->
+                         <!-- https://testsso--safdev--genesisextn.cs88.visual.force.com/apex/NewApplication?page=NewApplication&ent=01I0O000000vYCu&RecordType=0120O000000BRqrQAG&accountid={!item.Accountid}&retURL=%2Fa7F%2Fo&save_new=1&sfdc.override=1-->
+                         <!-- https://testsso--safdev--genesisextn.cs88.visual.force.com/apex/skuid__ui?page=NewApplication&ent=01I0O000000vYCu&RecordType=0120O000000BRqrQAG&accountid={!item.Accountid}&retURL=%2Fa7F%2Fo&save_new=1&sfdc.override=1-->
+                         <!-- <apex:commandlink action="https://saf-saml--saffull--genesisextn.cs88.visual.force.com/apex/NewApplication?ent=01I0O000000vYCu&RecordType=0120O000000BRqrQAG&accountid={!item.Accountid}&retURL=%2Fa7F%2Fo&save_new=1&sfdc.override=1" target="_blank">  -->                        
+                        <!--  <apex:commandLink action="https://saf-saml--clsdev--genesisextn.visualforce.com/apex/NewApplication?ent=01I0O000000vYCu&RecordType=0120O000000BRqrQAG&accountid={!item.Accountid}&retURL=%2Fa7F%2Fo&save_new=1&sfdc.override=1" target="_blank"> --> 
+                            <apex:commandLink action="https://saf-saml--genesisextn.eu30.visual.force.com/apex/NewApplication?ent=01I0O000000vYCu&RecordType=0120O000000BRqrQAG&accountid={!item.Accountid}&retURL=%2Fa7F%2Fo&save_new=1&sfdc.override=1" target="_blank"> 
+                                <apex:commandButton value="Create Application" disabled="{!IF(item.AccountId == null, true, false)}" />
+                                <!-- action="https://testsso--safdev--genesisextn.cs88.visual.force.com/apex/NewApplication?ent=01I0O000000vYCu&RecordType=0120O000000BRqrQAG&retURL=%2Fa7F%2Fo&save_new=1&sfdc.override=1"-->
+                            </apex:commandLink>
+                        </apex:column>
+                    </apex:pageBlockTable>
+                    </apex:outputPanel>
+                    </div>
+                </div>
+            </apex:outputPanel>
+        </apex:pageBlockSection>   
+       </apex:pageBlock>
+       <!-- Style section -->
+       <style>
+            .spinnerBg
+            {
+                top:0%;
+                width: 100%;
+                height: 100%;
+                left:0;
+                position: absolute;
+                background-color: #000;
+                opacity: 0.2;
+                z-index: 999999;
+            }
+            .spinner
+            {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                <!-- http://upload.wikimedia.org/wikipedia/commons/e/ed/Cursor_Windows_Vista.gif-->
+                <!-- /img/loading32.gif-->
+                background-image: url("/img/loading32.gif");
+                background-size: 30px;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-position: center;
+                z-index: 9999999;
+                opacity: 1;
+            }
+            
+        </style>
+    </apex:form>
+</apex:page>

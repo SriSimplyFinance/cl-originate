@@ -1,0 +1,6 @@
+<apex:component controller="AcceptedCondtionsExtClass" access="global">
+    <apex:attribute name="underwritingId" type="Id" description="Underwriting Record Id" assignTo="{!appId}"  />
+    <apex:repeat var="cx" value="{!appRec.Underwriter_comments__r}">
+    <li style="padding-bottom:9px;">{!cx.Condition__c} </li>  
+    </apex:repeat>
+</apex:component>

@@ -1,0 +1,24 @@
+.nx-fileupload {
+    height: 30px;
+    margin-bottom: 10px;
+}
+
+.nx-fileupload > .ui-button {
+    float: right;
+}
+
+.nx-fileupload > .nx-fileupload-status {
+    position: absolute;
+    top: 0;
+    right: 90px;
+}
+
+.ui-dialog
+{
+    height:160px !important;
+    overflow:hidden !important;
+}
+.ui-dialog-content
+{
+        overflow-y:hidden !important;
+}

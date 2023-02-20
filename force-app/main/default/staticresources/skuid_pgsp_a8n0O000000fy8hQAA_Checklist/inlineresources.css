@@ -1,0 +1,34 @@
+.wrapper-title {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+}
+
+.wrapper-title .nx-pagetitle-maintitle {
+    font: normal normal 700 14px Lato;
+    padding-top: 0px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+}
+
+.nx-page, #skuidEditBtnContainer, .ui-dialog, .blockMsg, .ui-multiselect-menu {
+    display: none;
+    /*top: -5px !important;*/
+    font-size: 12px;
+    font-family: 'Lato';
+    color: #37444e;
+}
+
+.nx-basicfieldeditor-column .nx-basicfieldeditor-section-header {
+    border-bottom: 1px solid #ddd;
+    color: #009ddc;
+    text-decoration: none;
+    background: transparent;
+    border-bottom: 0 solid black;
+    color: #37444e;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    margin-top: 40px;
+}

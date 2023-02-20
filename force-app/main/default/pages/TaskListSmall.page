@@ -1,0 +1,11 @@
+<apex:page showheader="false"
+  sidebar="false"
+  readonly="true"
+  docType="html-5.0"
+  title="Checklist">
+    <div class="wrapper">
+        <div class="maincontent">
+           <skuid:page page="Checklist"/>
+        </div>
+     </div>
+</apex:page>

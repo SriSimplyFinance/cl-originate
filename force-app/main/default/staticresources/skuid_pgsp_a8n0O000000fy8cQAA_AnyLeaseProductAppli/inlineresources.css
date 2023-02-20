@@ -1,0 +1,9 @@
+.ui-dialog
+{
+    height:150px !important;
+    overflow:hidden !important;
+}
+.ui-dialog-content
+{
+        overflow-y:hidden !important;
+}

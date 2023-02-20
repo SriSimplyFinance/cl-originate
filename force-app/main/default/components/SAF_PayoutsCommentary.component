@@ -1,0 +1,7 @@
+<apex:component controller="PayoutsCommentary" access="global" >
+    <apex:attribute name="ApplicationId" type="Id" description="Application Record Id" assignTo="{!appId}"  />
+    <apex:repeat var="cx" value="{!appRec.Tasks}">
+    <li style="padding-bottom:9px;">{!cx.Commentary__c} </li>  
+    </apex:repeat>
+
+</apex:component>

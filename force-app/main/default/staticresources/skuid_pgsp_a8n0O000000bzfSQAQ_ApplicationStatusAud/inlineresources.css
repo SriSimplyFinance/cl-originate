@@ -1,0 +1,12 @@
+.nx-button-list-config{
+        display:none;
+        /*visibility : hidden;*/
+}
+
+
+.wrapper-title-custom .nx-pagetitle-maintitle {
+    font: normal normal 700 14px Lato;
+    padding-top: 0px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+}

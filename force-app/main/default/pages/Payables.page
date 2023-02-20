@@ -1,0 +1,205 @@
+<apex:page controller="PayablesController"  sidebar="false"  cache="true">
+
+  <apex:form >
+  <apex:pageBlock title="Payables Summary">
+     <apex:pageMessages id="showmsg" ></apex:pageMessages>
+  <apex:pageblockSection columns="2">
+  <apex:pageBlockSectionItem >
+      Total Amount Payable £ <apex:outputText value="£{0, number,###,###,###,##0.00}">
+<apex:param value="{!TotalPayableAmnt}" />
+</apex:outputText>
+     </apex:pageBlockSectionItem>
+      <apex:pageBlockSectionItem > 
+   Total Amount Paid £<apex:outputText value="£{0, number, ###,###,###,##0.00}">
+<apex:param value="{!TotalAmntPaid}" />
+</apex:outputText>      
+    </apex:pageBlockSectionItem>
+    <apex:pageBlockSectionItem >
+    Total Amount Remaining £<apex:outputText value="£{0, number,###,###,###,##0.00}">
+<apex:param value="{!TotalAmntRemaining}" />
+</apex:outputText>
+    </apex:pageBlockSectionItem>
+    <apex:pageBlockSectionItem >
+   Agreement <apex:outputlink value="#" style="color:blue" onclick="window.location.replace('/{!Id}','_blank');">{!AgreementName}</apex:outputlink>
+    </apex:pageBlockSectionItem>
+  </apex:pageblockSection>
+  </apex:pageBlock>
+      <apex:pageBlock title="Payables" id="block">
+     
+     
+      <apex:pageblockSection columns="1">
+      <apex:pageblockTable value="{!dealerFunding}" var="item" style="width:100%">
+      <apex:column >
+    <apex:facet name="header" > 
+        <apex:inputCheckbox id="checkall" >
+    <apex:actionSupport event="onclick" action="{!GetSelected}" onsubmit="checkAll(this,true)" rerender="Selected_PBS" />
+        </apex:inputCheckbox>
+     </apex:facet>
+     <apex:inputCheckbox value="{!item.selected}" id="checkedone">
+   <apex:actionSupport event="onclick" action="{!GetSelected}" rerender="Selected_PBS"/>>
+    </apex:inputCheckbox>
+    </apex:column>      
+               <!-- <apex:column headerValue="Party"  value="{!item.Df.Dealer__r.cllease__Party_Name__r.name}"/>-->
+               <apex:column headerValue="Party"  value="{!item.Df.Dealer__r.cllease__Party_Account_Name__r.name}"/>
+                <apex:column headerValue="Party Type" value="{!item.Df.Dealer__r.cllease__Party_Type__c}"/>
+                <apex:column headerValue="Amount"  value="{!item.Df.Dealer_Charges__c}"/>
+                <apex:column headerValue="Date"  value="{!item.Df.Due_Date__c}"/>
+                <apex:column headerValue="Funded"  value="{!item.Df.Dealer_Funded__c}"/>
+                <apex:column headerValue="Payment Mode"  value="{!item.Df.Payment_Mode__r.name}"/>
+                 <apex:column headerValue="Bank Account Ref" value="{!item.Df.Bank_Account_Reference__c}"/>
+               <apex:column headerValue="Sort Code"  value="{!item.Df.Sort_Code__c}"/>
+               <apex:column headerValue="Account Number"  value="{!item.Df.Account_Number__c}"/> 
+               <apex:column headerValue="Reference"  value="{!item.Df.Reference__c}"/>
+                <apex:column headerValue="Owner"  value="{!item.df.LastmodifiedById}"/>
+                <apex:column headerValue="DF"><apex:outputLink value="#" style="color:blue" onclick="window.open('/{!item.df.Name}','_blank');">{!item.df.Name}</apex:outputLink>  
+                </apex:column>
+             <apex:column id="two">
+                 <apex:commandLink value=" Edit " onclick="window.open('/{!item.Df.id}/e?retURL={!item.Df.id}')" rendered="{!IF(item.Df.Dealer_Funded__c =true,false,true)}" reRender="two"/>       
+                 <!--<apex:commandButton value=" Delete" action="{!deleteDealerFunding}" disabled="{!IF(item.Df.Dealer_Funded__c =true,true,false)}"/>-->
+                 &nbsp;
+ <apex:commandLink value=" Delete" action="{!deleteDealerFunding}" onclick="return confirm('Are you sure?')" rendered="{!IF(item.Df.Dealer_Funded__c =true,false,true)}" >
+    <apex:param name="cParam" value="{!item.Df.id}" assignTo="{!cParam}"></apex:param>
+</apex:commandLink>
+      </apex:column>                   
+      </apex:pageblockTable>
+      </apex:pageblockSection>
+            <apex:pageblockButtons >
+          <!-- <apex:commandButton value="Add" action="{!redirect}"/>-->
+           <!--<apex:commandButton value="Add"  style="width:90px" onClick="Mark();return false;"/>-->
+           <apex:commandButton value="Add"  action="{!redirect}"/>
+           <apex:commandButton value="Fund All" action="{!FundAll}" onclick="checkAll(this,false)" disabled="{!required}"/>
+           <apex:commandButton value="Fund Part"  action="{!FundPart}" onclick="myFunction()" disabled="{!required}"/>
+           <apex:commandButton value="Cancel" action="{!cancel}"/>
+           <!--<apex:commandButton value="Delete" action="{!deleteDealerFunding}" disabled="{!disableDelete}"/>-->
+          
+       </apex:pageblockButtons>
+      </apex:pageBlock>
+      
+      
+       <apex:pageBlock title="Commission Summary">
+     <!--<apex:pageMessages id="showmsg" ></apex:pageMessages>-->
+          <apex:pageblockSection columns="2">
+          <apex:pageBlockSectionItem >
+              Total Amount Payable £ <apex:outputText value="£{0, number,###,###,###,##0.00}">
+        <apex:param value="{!TotalPayableAmntComm}" />
+        </apex:outputText>
+             </apex:pageBlockSectionItem>
+              <apex:pageBlockSectionItem > 
+           Total Amount Paid £<apex:outputText value="£{0, number, ###,###,###,##0.00}">
+        <apex:param value="{!TotalAmntPaidComm}" />
+        </apex:outputText>      
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+            Total Amount Remaining £<apex:outputText value="£{0, number,###,###,###,##0.00}">
+        <apex:param value="{!TotalAmntRemainingComm}" />
+        </apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+           Agreement <apex:outputlink value="#" style="color:blue" onclick="window.location.replace('/{!Id}','_blank');">{!AgreementName}</apex:outputlink>
+            </apex:pageBlockSectionItem>
+          </apex:pageblockSection>
+          </apex:pageBlock>
+            <apex:pageBlock title="Commisions" id="block1">
+       <!-- <apex:pageMessages id="showmsg"></apex:pageMessages>-->
+     
+      <apex:pageblockSection columns="1">
+      <apex:pageblockTable value="{!ExpenseFeeList}" var="item" style="width:100%">
+      <apex:column >
+     <apex:facet name="header" > 
+       <apex:inputCheckbox id="checkall" >
+    <apex:actionSupport event="onclick" action="{!getSelectedComm}" onsubmit="checkAll(this,true)" rerender="Selected_PBS" />
+        </apex:inputCheckbox>
+     </apex:facet>
+     <apex:inputCheckbox value="{!item.saf_Selected__c}" id="checkedone">
+   <apex:actionSupport event="onclick" action="{!getSelectedComm}" rerender="Selected_PBS"/>
+    </apex:inputCheckbox>
+    </apex:column>  
+              <apex:column headerValue="Party"  value="{!item.saf_contractParty__r.cllease__Party_Account_Name__r.name}"/>
+                <apex:column headerValue="Party Type" value="{!item.saf_contractParty__r.cllease__Party_Type__c}"/>    
+           
+              
+                <!--<apex:column headerValue="Name">
+                           <apex:outputlink value="/{!item.Id}" target="_blank">{!item.Name}</apex:outputlink>
+                </apex:column>-->
+               <!--<apex:column headerValue="Contract"  value="{!item.LS_Contract__c}"/>-->
+                  <apex:column headerValue="Amount"  value="{!item.saf_Amount__c}"/>
+                   <apex:column headerValue="Start Date"  value="{!item.saf_Date__c}"/>
+              
+                <apex:column headerValue="Funded" value="{!item.saf_Fee_Funded__c}"/>
+                 <apex:column headerValue="Payment Mode"  value="{!item.Payment_Mode__r.name}"/>
+                 <apex:column headerValue="Bank Account Ref" value="{!item.saf_Bank_Account_Reference__c}"/>
+                 <apex:column headerValue="Sort Code"  value="{!item.saf_Sort_Code__c}"/>
+                 <apex:column headerValue="Account Number"  value="{!item.saf_Account_Number__c}"/> 
+                 <apex:column headerValue="Reference"  value="{!item.saf_Reference__c}"/>
+                 <apex:column headerValue="Fee"  value="{!item.Fee_Schedule__r.cllease__Fee_Definition__r.Name}"/>
+                 <apex:column headerValue="Owner"  value="{!item.LastmodifiedById}"/>
+                 <apex:column headerValue="CFN">
+                 <apex:commandLink value="{!item.Name}"  style="color:blue" onclick="window.open('/{!item.id}')"/>
+                 </apex:column>
+
+                <!--<apex:column headerValue="Disbursement Date"  value="{!item.Df.Dealer_Funded__c}"/>
+                <apex:column headerValue="Payment Mode"  value="{!item.Df.Payment_Mode__r.name}"/>
+                 <apex:column headerValue="Bank Account Ref" value="{!item.Df.Bank_Account_Reference__c}"/>
+               <apex:column headerValue="Sort Code"  value="{!item.Df.Sort_Code__c}"/>
+               <apex:column headerValue="Account Number"  value="{!item.Df.Account_Number__c}"/> 
+                --> 
+             <apex:column id="two">
+                 <apex:commandLink value=" Edit " onclick="window.open('/{!item.id}/e?retURL={!item.id}')" rendered="{!IF(item.saf_Fee_Funded__c=true,false,true)}" reRender="two"/>       
+                
+                 &nbsp;
+ <apex:commandLink value=" Delete" action="{!deleteCommFunding}" onclick="return confirm('Are you sure?')" rendered="{!IF(item.saf_Fee_Funded__c=true,false,true)}" >
+    <apex:param name="cParam" value="{!item.id}" assignTo="{!cParam}"></apex:param>
+</apex:commandLink>
+      </apex:column>                
+      </apex:pageblockTable>
+      </apex:pageblockSection>
+         <apex:pageblockButtons >
+         <!-- <apex:commandButton value="Add" action="{!redirect}"/>-->
+           <!--<apex:commandButton value="Add"  style="width:90px" onClick="Mark();return false;"/>-->
+           <apex:commandButton value="Add"  action="{!redirectComm}" />
+           <apex:commandButton value="Fund All" action="{!FundAllCom}" onclick="checkAll(this,false)" disabled="{!required}"/>
+           <apex:commandButton value="Fund Part"  action="{!FundAllCom}" onclick="myFunction()" disabled="{!required}"/>
+           <apex:commandButton value="Cancel" action="{!cancel}"/>
+           <!--<apex:commandButton value="Delete" action="{!deleteDealerFunding}" disabled="{!disableDelete}"/>-->
+          
+        </apex:pageblockButtons>
+      </apex:pageBlock>
+  </apex:form>
+  <script>
+function checkAll(cb,flag)
+{
+if (flag == true)
+{
+var inputElem = document.getElementsByTagName("input");
+for(var i=0; i<inputElem.length; i++)
+{
+if(inputElem[i].id.indexOf("checkedone")!=-1)
+if (flag)
+inputElem[i].checked = cb.checked;
+else
+inputElem[i].checked = true;
+}
+}
+else
+{
+  var x;
+   if (confirm("Are you really wanted to process all the records!") == true) {
+   x = "OK";
+    } else {
+        x = "Cancel";
+    }
+    if(x == 'OK') {
+var inputElem = document.getElementsByTagName("input");
+for(var i=0; i<inputElem.length; i++)
+{
+if(inputElem[i].id.indexOf("checkedone")!=-1)
+if (flag)
+inputElem[i].checked = cb.checked;
+else
+inputElem[i].checked = true;
+}
+}
+} 
+}
+</script>
+</apex:page>

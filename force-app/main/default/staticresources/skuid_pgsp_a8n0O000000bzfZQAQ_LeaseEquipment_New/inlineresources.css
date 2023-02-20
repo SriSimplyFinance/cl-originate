@@ -1,0 +1,34 @@
+#partyDetailPageId {
+    height: 848px;
+}
+
+body {
+    background-color: #ebeef0;
+}
+
+body > .nx-page {
+    padding: 0;
+}
+
+.image-button.money:after {
+    content: 'Loan Opportunities';
+}
+
+.image-button.credit-analysis:after {
+    content: 'Credit Analysis';
+}
+
+.image-button.financial-accounts:after {
+    content: 'Financial Analysis';
+}
+
+.image-button.finInstitution:after {
+    content: 'Financial Accounts';
+}
+
+.image-button.clockFire:after {
+    content: 'Relationship Covenants';
+}
+.hide-datepicker-calendar .ui.datepicker.calendar {
+   display: none;
+}

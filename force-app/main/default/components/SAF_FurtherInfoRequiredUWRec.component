@@ -1,0 +1,6 @@
+<apex:component controller="SAF_FurtherInfoRequiredUWRec" access="global">
+    <apex:attribute name="underwritingId" type="Id" description="Underwriting Record Id" assignTo="{!appId}"  />
+    <apex:repeat var="cx" value="{!appRec.Further_Information_Requests__r}">
+    <li style="padding-bottom:9px;">{!cx.Reason__c} - {!cx.Further_Information_Request__c} </li>  
+    </apex:repeat>
+</apex:component>

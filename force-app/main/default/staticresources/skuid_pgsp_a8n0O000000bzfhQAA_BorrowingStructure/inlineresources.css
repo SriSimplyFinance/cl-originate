@@ -1,0 +1,67 @@
+.selected-btn {
+    background: #16325C!important; /* Or some other color */
+}
+.clorequired{
+
+}
+.progress-indicator {
+    margin-bottom: 20px;
+}
+.progress-indicator .progress-chunk .progress-text {
+    line-height: 32px;
+    font-size: 12px;
+}
+.progress-indicator div {
+    padding: 0px;
+}
+.progress-text {
+    padding: 0px;
+    width: 90px;
+}
+.text-content {
+    font-size: 12px;
+    line-height: 12px;
+}
+.progress-triangle-outline {
+    /* display: none; */
+    border-left: 25px solid #ffffff;
+}
+.progress-indicator .progress-chunk.current .progress-triangle {
+    border-left: 20px solid #1cbdd4;
+}
+.progress-indicator .progress-chunk.done .progress-triangle {
+    border-left: 20px solid #2d5074;
+}
+.progress-indicator .progress-chunk .progress-triangle {
+    border-left: 20px solid #dddddd;
+}
+.progress-indicator .progress-chunk.current .progress-triangle-outline {
+    border-left: 22px solid #ffffff;
+    transform: translate(100%, -50%);
+}
+.progress-indicator .progress-chunk.done .progress-triangle-outline {
+    border-left: 22px solid #ffffff;
+    transform: translate(100%, -50%);
+}
+.progress-indicator .progress-chunk .progress-triangle-outline {
+    border-left: 22px solid #ffffff;
+    transform: translate(100%, -50%);
+}
+.nx-pagetitle-subtitle {
+    position: fixed;
+    top: 70px;
+    font-size: 12px;
+    color: #121212;
+}
+#partywizard {
+    margin-top: 20px;
+}
+.nx-page {
+    overflow: hidden;
+}
+.ui-dialog-title {
+    font-size: 14px;
+}
+.ui-dialog .ui-widget .ui-widget-content .ui-corner-all .ui-front div {
+    overflow: none;
+}

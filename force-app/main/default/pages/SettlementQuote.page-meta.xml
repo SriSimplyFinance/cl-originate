@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>45.0</apiVersion>
+    <availableInTouch>false</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>Saved Settlement Quote</description>
+    <label>SettlementQuote</label>
+    <packageVersions>
+        <majorNumber>3</majorNumber>
+        <minorNumber>1018</minorNumber>
+        <namespace>clcommon</namespace>
+    </packageVersions>
+    <packageVersions>
+        <majorNumber>3</majorNumber>
+        <minorNumber>1008</minorNumber>
+        <namespace>cllease</namespace>
+    </packageVersions>
+</ApexPage>

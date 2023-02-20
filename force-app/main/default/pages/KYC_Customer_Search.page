@@ -1,0 +1,11 @@
+<apex:page showheader="true"
+  sidebar="false"
+  readonly="true"
+  docType="html-5.0"
+  title="KYC Customer Search">
+    <div class="wrapper">
+        <div class="maincontent">
+            <skuid:page page="CustomerSearchV2" />
+        </div>
+     </div>
+</apex:page>

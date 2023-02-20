@@ -1,0 +1,57 @@
+<apex:page Controller="customerAlert" tabStyle="Customer_Alert__c" title="Details" sidebar="true" expires="600" showHeader="true" standardStylesheets="true">
+<html>
+    <body>
+        <apex:form >
+            <apex:pageBlock title="Customer Alert" id="entireForm" >
+                <apex:pageMessages id="msg"/>
+            
+                <apex:pageBlockButtons id="buttons">
+                    <apex:commandButton status="pStatus" action="{!save}" value="Save" rerender="msg"/>
+                    <apex:commandButton status="pStatus" action="{!back}" value="Back" immediate="true"/>
+                </apex:pageBlockButtons>
+                
+                <apex:pageBlockSection columns="2" id="pbSection">
+                    
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Customer Name:" for="Customer" />
+                        <apex:outputField value="{!alert.Customer__c}" id="Customer"> 
+                            <!--<apex:inlineEditSupport event="ondblClick" />-->
+                        </apex:outputField>
+                        <apex:facet name="header">Customer Name</apex:facet>
+                    </apex:pageBlockSectionItem>
+                   
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Alert" for="MasterAlert" />
+                        <apex:actionRegion >
+                            <apex:inputField value="{!alert.MasterAlert__c}" id="MasterAlert">
+                                <apex:actionSupport event="onchange" action="{!currentAlerts}" rerender="entireForm" />
+                            </apex:inputField>
+                        </apex:actionRegion>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem rendered="{!masterAlert.Display_Alert_Date__c}">
+                        <apex:outputLabel value="Alert Date" for="Date" rendered="{!masterAlert.Display_Alert_Date__c}" />
+                        <apex:inputfield value="{!alert.Alert_Date__c}" id="date" rendered="{!masterAlert.Display_Alert_Date__c}"/>
+                    </apex:pageBlockSectionItem>
+                        
+                    <apex:pageBlockSectionItem rendered="{!masterAlert.Display_Amount__c}">
+                        <apex:outputLabel value="Amount" for="Amount"  rendered="{!masterAlert.Display_Amount__c}"/>
+                        <apex:inputField value="{!alert.Amount__c}" id="Amount"  rendered="{!masterAlert.Display_Amount__c}"/> 
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem rendered="{!masterAlert.Display_Description__c}">
+                        <apex:outputLabel value="Description" for="Description" rendered="{!masterAlert.Display_Description__c}"/>
+                        <apex:inputText value="{!alert.Description__c}" id="Description" rendered="{!masterAlert.Display_Description__c}"/>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem rendered="{!masterAlert.Display_Urgency__c}">
+                        <apex:outputLabel value="Urgency" for="Urgency" rendered="{!masterAlert.Display_Urgency__c}"/>
+                        <apex:inputText value="{!alert.Urgency__c}" id="Urgency" rendered="{!masterAlert.Display_Urgency__c}"/>
+                    </apex:pageBlockSectionItem>
+                    
+                </apex:pageBlockSection> 
+            </apex:pageBlock> 
+        </apex:form> 
+    </body> 
+</html> 
+</apex:page>

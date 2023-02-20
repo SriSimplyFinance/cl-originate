@@ -1,0 +1,42 @@
+.ui-tabs .ui-tabs .ui-tabs-nav li.ui-state-default,  .ui-tabs .ui-tabs .ui-tabs-nav li.ui-state-hover {
+	margin: 0 !important;
+	padding: 12px 20px;
+	position: relative;
+	top: -1px;
+	height: 16px;
+}
+.ui-tabs .ui-tabs .ui-tabs-nav li.ui-state-hover a:link{
+	color: #005fb2;
+}
+
+.ui-tabs .ui-tabs ul.ui-tabs-nav {
+	padding: 0;
+	margin: 4px;
+	height: 39px;
+	border: 1px solid #d8dde6;
+}
+a{
+    -webkit-transition: color 0.1s linear;
+	transition: color 0.1s linear;
+}
+table.nx-skootable-data tbody tr:hover td {
+	border-bottom-width: 2px;
+	padding-bottom: 3px;
+}
+table.nx-skootable-data tbody tr:hover td.nx-item-drawer {
+	border-bottom-width: 1px;
+	padding-bottom: 0;
+}
+.ui-button, .nx-conditiontoken{
+    -webkit-transition: color 0.05s linear,background-color 0.05s linear;
+	transition: color 0.05s linear,background-color 0.05s linear;
+}
+.ui-datepicker.ui-widget-content td a, .ui-datepicker.ui-widget-content td span{
+  	text-align: center;
+	height: 26px;
+	padding-top: 4px;
+	box-sizing: border-box;
+}
+.sk-search>div.nx-field-reference-search {
+	font-size: 1.15em;
+}

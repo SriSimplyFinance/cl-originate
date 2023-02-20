@@ -1,0 +1,11 @@
+<apex:page showheader="true"
+  sidebar="false"
+  readonly="true"
+  docType="html-5.0"
+  title="Governance Launchpad">
+    <div class="wrapper">
+        <div class="maincontent">
+            <skuid:page page="GovernanceLaunchpad" />
+        </div>
+     </div>
+</apex:page>

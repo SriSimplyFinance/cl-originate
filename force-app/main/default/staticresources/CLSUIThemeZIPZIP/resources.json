@@ -1,0 +1,28 @@
+{
+	"fontConfig": {
+		"google": {
+			"families": [
+				"Lato"
+			]
+		},
+		"custom": {
+			"families": [
+				"SalesForce Sans"
+			],
+			"urls": [
+				"/resource/skuid__Fonts/sfsans/sfsans.css"
+			]
+		},
+		"__comment": "DO NOT EDIT, this is a generated file and all changes will be overwritten. If you wish to change the webfonts loaded, please do so in the skuid_theme.json"
+	},
+	"cssResources": [],
+	"themeSettings": {
+		"visualizations": {
+			"chart": {},
+			"geochart": {
+				"background": "#9bc6cf",
+				"nullColor": "#eee"
+			}
+		}
+	}
+}

@@ -1,0 +1,11 @@
+<apex:page showheader="true"
+  sidebar="true"
+  readonly="true"
+  docType="html-5.0"
+  title="Cash_Receipts">
+    <div class="wrapper">
+        <div class="maincontent">
+            <skuid:page page="Cash_Receipt" />
+        </div>
+     </div>
+</apex:page>

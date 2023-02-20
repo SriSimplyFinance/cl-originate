@@ -1,0 +1,21 @@
+<apex:page controller="importDataFromCSVController">
+<apex:form >
+<apex:pagemessages />
+<apex:pageBlock >
+<apex:pageBlockSection columns="4">
+<apex:inputFile value="{!csvFileBody}" filename="{!csvAsString}"/>
+<apex:commandButton value="Import Contracts" action="{!importCSVFile}"/>
+<apex:commandButton value="RunBatch" action="{!runBatch}"/>
+<apex:commandButton value="UpdateAccurals" action="{!updateAccuralDates}"/>
+</apex:pageBlockSection>
+</apex:pageBlock>
+<apex:pageBlock >
+<apex:pageblocktable value="{!conList}" var="con">
+<apex:column value="{!con.Name}" />
+<apex:column value="{!con.Restructure_Date__c}" />
+<apex:column value="{!con.LS_Contract__r.cllease__Contract_Restructured__c}" />
+<apex:column value="{!con.LS_Contract__r.cllease__Next_Income_Accrual_Date__c}" />
+</apex:pageblocktable>
+</apex:pageBlock>
+</apex:form>
+</apex:page>

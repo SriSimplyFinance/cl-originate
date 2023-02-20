@@ -1,0 +1,120 @@
+<apex:page Controller="SAF_GLAccountingEnteries" action="{!SAF_GLAccountingEnteries}"  sidebar="false"  cache="true" docType="html-5.0">
+    <apex:form > 
+         <apex:messages style="color:Red" />
+            
+        <!--<form>
+            <apex:actionFunction action="{!test}" name="searchFunction" rerender="msg,block" oncomplete="alert('After apex method') ;"/>
+        </form>-->
+        <apex:sectionHeader title="Manual GL Entries" /> 
+        
+          <apex:pageBlock title="Filter">
+    
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="Filter" action="{!search}" reRender="glEntriesList" status="paginationStatus"/>
+                <apex:commandButton value="Export" action="/apex/SAF_VF_GLManualDoc?id={!ManualGL.MN_Contract__c}"  status="paginationStatus"/> <!-- reRender="glEntriesList"-->
+             <!--  <apex:commandButton value="Run GL Jobs" action="{!Runjobs}"  status="paginationStatus"/>
+               <apex:commandButton value="Run GL Reversal Jobs" action="{!RunjobsReverse}"  status="paginationStatus"/>-->
+               <apex:actionStatus id="paginationStatus">
+             <apex:facet name="start">
+                 Please wait...<img src="/img/loading32.gif" style="width: 18px;"/>
+             </apex:facet>
+          </apex:actionStatus>
+                <!--<apex:commandButton value="Download" action="/apex/SAF_VF_GLManualDoc?id={!ManualGL.MN_Contract__c}" /> -->
+            
+            </apex:pageBlockButtons>
+             <apex:pageBlockSection columns="2">
+                 <apex:inputField value="{!ManualGL.MN_Contract__c}"/>
+                <apex:input type="date" value="{!ToDate}" label="State Date"/>
+                 <apex:inputField value="{!ManualGL.MN_GL_Account__c}" label="GL Account" required="false"/>
+                 <apex:input type="date" value="{!FromDate}" label="End Date"/>
+                 <apex:inputField value="{!ManualGL.Saf_GL_Accounting_Entries__c}" label="GL Entry" required="false"/>
+             </apex:pageBlockSection>
+         </apex:pageBlock>
+        <div style="overflow: scroll; width: 2000px; height: 520px;">
+         <apex:pageblock id="glEntriesList">
+           <!-- <apex:actionRegion >
+               
+                <apex:outputText value="Records per page:"></apex:outputText>
+                <apex:selectList value="{!PaginationStart}" size="1">
+                    <apex:selectOption itemLabel="5" itemValue="5"></apex:selectOption>
+                    <apex:selectOption itemLabel="10" itemValue="10"></apex:selectOption>
+                    <apex:selectOption itemLabel="15" itemValue="15"></apex:selectOption>
+                    <apex:selectOption itemLabel="20" itemValue="20"></apex:selectOption>
+                    <apex:actionSupport event="onchange" action=""
+                        rerender="glEntriesTable, navigation" />
+                </apex:selectList>
+            </apex:actionRegion>-->
+
+            <apex:pageblockTable value="{!lstManualGlEntry}" id="glEntriesTable" var="JA">
+              <!-- <apex:column headerValue="GL Transaction">
+                             <apex:commandLink value="{!JA.name}" reRender="glEntriesPage:glEntriesDetail">
+                                <apex:param name="glEntriesMode" value="{!JA.ID}" />
+                            </apex:commandLink>
+                          
+                          <apex:commandLink action="/{!JA.Id}" target="_blank" value="{!JA.Name}"/>
+                        </apex:column>-->
+                <apex:column value="{!JA.createddate}">
+                     <apex:facet name="header">
+                       <apex:commandLink action="{!ViewData}" value="Created Date{!IF(sortExpression =='createddate',IF(sortDirection='ASC','▼','▲'),'')}">
+                         <apex:param value="createddate" name="column" assignTo="{!sortExpression}" ></apex:param>
+                        </apex:commandLink>
+                     </apex:facet>
+                   </apex:column>      
+                <apex:repeat value="{!$ObjectType.Manual_GL__c.FieldSets.ManualGLTxnFieldSet}" var="field" >
+                    <apex:column headerValue="{!field.Label}" rendered="{!IF(field.Label == 'Manual GL Name', true, true)}" >
+                        <apex:outputField value="{!JA[field]}"  rendered="{!IF(field.Label == 'Id', false, true)}"/>
+                       
+                    </apex:column>
+                
+                </apex:repeat> 
+                
+            </apex:pageblockTable>
+          
+         <apex:outputPanel style="text-align:center;" layout="block">
+         <apex:panelGrid columns="5" id="navigation">
+            
+            <apex:commandButton action="{!previous}" reRender="glEntriesList" disabled="{!NOT(hasPrevious)}"  value="Previous" status="paginationStatus">&nbsp;Page {!pageNumber} of {!totalPages}&nbsp;</apex:commandButton>
+            <apex:commandButton action="{!next}"  reRender="glEntriesList"  value="Next" disabled="{!NOT(hasNext)}" status="paginationStatus"></apex:commandButton>
+            <apex:commandButton value="Last" rerender="glEntriesList" action="{!last}" disabled="{!NOT(hasNext)}" status="paginationStatus"/>
+             <apex:commandButton value="First" reRender="glEntriesList" action="{!first}" disabled="{!NOT(hasPrevious)}" status="paginationStatus"/>
+          </apex:panelGrid>
+       <apex:actionStatus id="paginationStatus">
+             <apex:facet name="start">
+                 Please wait...<img src="/img/loading32.gif" style="width: 18px;"/>
+             </apex:facet>
+          </apex:actionStatus>
+       </apex:outputPanel>
+       </apex:pageblock>
+       </div>
+       <!-- Style section -->
+       <style>
+            .spinnerBg
+            {
+                top:0%;
+                width: 100%;
+                height: 100%;
+                left:0;
+                position: absolute;
+                background-color: #000;
+                opacity: 0.2;
+                z-index: 999999;
+            }
+            .spinner
+            {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                <!-- http://upload.wikimedia.org/wikipedia/commons/e/ed/Cursor_Windows_Vista.gif-->
+                <!-- /img/loading32.gif-->
+                background-image: url("/img/loading32.gif");
+                background-size: 30px;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-position: center;
+                z-index: 9999999;
+                opacity: 1;
+            }
+            
+        </style>
+    </apex:form>
+</apex:page>

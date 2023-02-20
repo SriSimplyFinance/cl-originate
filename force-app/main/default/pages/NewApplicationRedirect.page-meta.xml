@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>43.0</apiVersion>
+    <availableInTouch>true</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>This page is used to redirect to NewApplication screen  by overriding the Record type selection screen</description>
+    <label>NewApplicationRedirect</label>
+    <packageVersions>
+        <majorNumber>2</majorNumber>
+        <minorNumber>5014</minorNumber>
+        <namespace>genesis</namespace>
+    </packageVersions>
+</ApexPage>

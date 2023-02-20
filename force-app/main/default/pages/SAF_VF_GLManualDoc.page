@@ -1,0 +1,6 @@
+<apex:page controller="SAF_GLAccountingEnteries" sidebar="false" action="{!setsize}"  contenttype="text/csv#Export.csv;charset=utf8" cache="true">{!strbody}
+<!--Agreement Number : {!contract.Name} contentType="text/csv#Export.csv;charset=utf8" 
+Amount To Current : {!contract.cllease__Amount_to_Current__c}
+Agreement Status: {!contract.cllease__Lease_Status__c}
+Payment Amount: {!contract.cllease__Payment_Amount__c}-->
+</apex:page>

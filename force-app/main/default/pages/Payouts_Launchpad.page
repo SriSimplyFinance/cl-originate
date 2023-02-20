@@ -1,0 +1,11 @@
+<apex:page showheader="true"
+  sidebar="false"
+  readonly="true"
+  docType="html-5.0"
+  title="Payouts Launchpad">
+    <div class="wrapper">
+        <div class="maincontent">
+            <skuid:page page="Payouts_Launchpad" />
+        </div>
+     </div>
+</apex:page>

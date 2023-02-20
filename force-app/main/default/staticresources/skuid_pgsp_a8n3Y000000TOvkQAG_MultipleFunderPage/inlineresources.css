@@ -1,0 +1,17 @@
+.wrapper-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.nx-pagetitle-maintitle {
+    font: normal normal 700 14px Lato;
+    padding-top: 0px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+}
+
+.nx-page{
+    top:-7px;
+}

@@ -1,0 +1,60 @@
+.hidetablefooter .nx-list-footer{	
+    display:none;
+}
+
+.hidetableHeader thead {	
+    display:none;
+}
+
+.templatefields .nx-template{
+    word-break: normal;
+}
+
+/*.tableHeaderAutoAlert table.nx-skootable-data th{
+    font-weight: bold  !important;
+    background-color: palevioletred  !important;
+}
+
+.pinkTableOdd table.nx-skootable-data tbody tr:nth-child(odd) td{
+    background-color: lightpink;
+}
+
+.pinkTableEven table.nx-skootable-data tbody tr:nth-child(even) td{
+    background-color: lightpink;
+}
+
+.pinkTableBold .nx-skootable-data .nx-fieldtext{
+    font-weight: bold;
+}
+
+.bgFieldEditor .nx-basicfieldeditor-item{
+    padding: 0 8px;
+    border-bottom: 1px solid #ebeef0;
+    background-color: lightpink;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+}*/
+
+.Experianfieldonly .nx-basicfieldeditor-column .nx-basicfieldeditor-section-wrapper .nx-basicfieldeditor-section .nx-basicfieldeditor-section-body .nx-basicfieldeditor-item
+{
+    padding: 0 8px;
+    border-bottom: 1px solid #ebeef0;
+    background-color: lightpink;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+}
+
+.nx-basicfieldeditor-column .nx-basicfieldeditor-section-wrapper .nx-basicfieldeditor-section .nx-basicfieldeditor-section-body .nx-basicfieldeditor-item .nx-basicfieldeditor-item-label{
+    color:black !important;
+}
+
+.nx-include-panel {
+    min-height: auto !important;
+    position: relative;
+}
+.ui-dialog .ui-dialog-title{
+        
+    font-weight: Bold;
+}

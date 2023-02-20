@@ -1,0 +1,253 @@
+html {
+    height: 100%;
+}
+
+body {
+    background-color: #EBEEF0;
+    font: normal normal 400 12px Lato;
+    padding: 0 !important;
+    height: 100%;
+}
+
+body > .nx-page {
+    padding: 0;
+    background-color: #EBEEF0;
+}
+
+.cls-dashboard-tab-content {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.cls-dashboard-tab-content .ui-tabs-nav {
+    position: absolute;
+    top: 0;
+    height: 40px;
+    left: 0;
+    right: 0;
+}
+
+.cls-dashboard-tab-content > div.ui-tabs-panel {
+    position: absolute;
+    top: 46px;
+    bottom: 6px;
+    left: 0;
+    right: 0;
+}
+
+#loan-dashboard-grid {
+    margin: 0 !important;
+}
+
+#loan-panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 40%;
+    margin: 0 !important;
+}
+
+#loan-right-panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 40%;
+    right: 0;
+    margin: 0 0 0 10px !important;
+}
+
+#loan-panel .cls-dashboard-section {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+#loan-panel .cls-dashboard-section .wrapper-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+#loan-panel .cls-dashboard-section .wrapper-container {
+    position: absolute;
+    /*top: 65px;*/
+    top: 117px; /* Customer Banner */
+    bottom: 10px;
+    left: 0;
+    right: 0;
+}
+
+#loan-panel .cls-dashboard-section .wrapper-container div {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+/*#loan-dashboard-document-section{
+    position: absolute;
+    top: 0;
+    bottom: 77%;
+    left: 0;
+    right: 0;
+}*/
+
+#loan-dashboard-parties-section {
+    position: absolute;
+    top: 0;
+    bottom: 80%;
+    left: 0;
+    right: 0;
+    margin: 0 !important;
+}
+
+#Underwriting {
+    position: absolute;
+    top: 21%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0 !important;
+    background-color: White;
+}
+
+#document {
+    position: absolute;
+    top: 5%;
+    bottom: 45%;
+    left: 0;
+    right: 0;
+    margin: 0 !important;
+}
+#sharpointdoc {
+    position: absolute;
+    top: 56%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0 !important;
+    /*background-color: White;*/
+}
+#loan-dashboard-document-section div,
+#loan-dashboard-parties-section div,
+#document div,
+#Underwriting div{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+} 
+
+#relationship-dashboard{
+    position: absolute;
+    top: 10px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0 !important;
+}
+#relationship-dashboard2{
+    position: absolute;
+    top: 10px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0 !important;
+}
+#collateral-tab,
+#construction-tab,
+#Equipment-relation{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0 !important;
+}
+#Invoice-relation{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0 !important;
+}
+#construction-help {
+    position: absolute;
+    top: -42px;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    border: none !important;
+}
+
+#loan-details-iframe,
+#document-iframe,
+#party-iframe {
+    border: none;
+}
+
+.ui-dialog .ui-dialog-title {
+    font-weight: 800 !important;    
+}
+
+
+div[pagename="NGLoanDashBoard"] {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.nx-pagetitle-maintitle {
+    font: normal normal 700 14px Lato;
+    padding-top: 0px;
+    padding-bottom: 15px;
+    padding-left: 10px;
+}
+
+.nx-pagetitle {
+        padding-top: 10px;
+}
+
+
+/* button positioning */
+.wrapper-title-custom .iconic-button-fee,.wrapper-title-custom .iconic-button-edit,.wrapper-title-custom .iconic-button-add,.wrapper-title-custom .iconic-button-copy
+{
+    position:absolute;
+}
+
+.wrapper-title-Agreement
+{
+    font: normal normal 700 14px Lato;
+    top: 78px;
+    padding-bottom: 10px;
+    margin-left: 10px;
+    position: absolute;
+}
+
+.wrapper-title-Customer  /* Customer Banner */
+{
+    font: normal normal 700 14px Lato;
+    top: 96px;
+    padding-bottom: 10px;
+    margin-left: 10px;
+    position: absolute;
+}
+
+.cls-dashboard-section .nx-pagetitle .nx-pagetitle-maintitle
+{
+ padding-top:50px; 
+ padding-bottom:28px; /* Customer Banner */
+}

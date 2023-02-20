@@ -1,0 +1,11 @@
+<apex:page showheader="true"
+  sidebar="false"
+  readonly="true"
+  docType="html-5.0"
+  title="Brokering Out Launchpad">
+    <div class="wrapper">
+        <div class="maincontent">
+            <skuid:page page="Brokering_Out" />
+        </div>
+     </div>
+</apex:page>

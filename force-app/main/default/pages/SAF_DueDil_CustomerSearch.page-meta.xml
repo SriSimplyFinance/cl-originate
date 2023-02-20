@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>44.0</apiVersion>
+    <availableInTouch>false</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>This form is used to search the customers from dueDil API and allows to create the customer in Salesforce</description>
+    <label>Due Dil Customer Search</label>
+    <packageVersions>
+        <majorNumber>2</majorNumber>
+        <minorNumber>6008</minorNumber>
+        <namespace>clcommon</namespace>
+    </packageVersions>
+</ApexPage>
