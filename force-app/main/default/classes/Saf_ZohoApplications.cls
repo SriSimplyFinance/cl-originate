@@ -367,6 +367,7 @@ global class Saf_ZohoApplications{
                     requestBodycreate = requestBodycreate.replace('"(','"' ).replace(')"','"' );
                     System.debug('Before printing introducer1'+requestBodycreate);
                    }
+                        //code for introduction field type
                     else if(os.Salesforce_Field__c == 'Introduction_Type__c' )
                     {
                         string zohoIntroductiontype = objapp.Introduction_Type__c;
