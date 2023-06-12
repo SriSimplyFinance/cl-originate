@@ -267,12 +267,15 @@ global class Saf_ZohoApplications{
                 system.debug('valueMap :' +valueMap);
                 return valueMap;
         }
-         
+        }
+
          public static String GetRequestbody(genesis__Applications__c objapp,boolean Iscreate)
         {
             string applicationid=objapp.id;
               string strzohoIntroducerId = objapp.introducer1__c != null ? getAccountInZoho(objapp.introducer1__c):null;
             system.debug('strzohoIntroducerId :' +strzohoIntroducerId);
+            string strzohoIntroductionTypeId = objapp.Introduction_Type__c != null ? getAccountInZoho(objapp.genesis__Account__c):null;
+            system.debug('strzohoIntroductionTypeId :' +strzohoIntroductionTypeId);
             List<Saf_ZohoApplicationFieldMapping__c> mcs = Saf_ZohoApplicationFieldMapping__c.getall().values();
             List<genesis__Applications__c> listApp = [Select Id,Introducer1__c,genesis__description__c,genesis_ProposalName__c,Name,Zoho_Customer_Id__c,genesis__Account__r.Zoho_Customer_Id__c,genesis__Account__c,Support_Owner__r.Zoho_ID__c,genesis_ProposalOwner__r.Zoho_ID__c from genesis__Applications__c where Id =: objapp.Id limit 1];
             string strzohoUserId;
@@ -364,6 +367,13 @@ global class Saf_ZohoApplications{
                     requestBodycreate = requestBodycreate.replace('"(','"' ).replace(')"','"' );
                     System.debug('Before printing introducer1'+requestBodycreate);
                    }
+                    else if(os.Salesforce_Field__c == 'Introduction_Type__c' )
+                    {
+                        string zohoIntroductiontype = objapp.Introduction_Type__c;
+                        requestBodycreate = requestBodycreate  + '      "'+os.Zoho_Fields__c +'": "'+ zohoIntroductiontype +'",';
+                        requestBodycreate = requestBodycreate.replace('"(','"' ).replace(')"','"' );
+                        System.debug('Before printing introduction type '+requestBodycreate);
+                    }
                     else if(os.Salesforce_Field__c == 'Application_link__c' )
                    { 
                        string link=System.Label.Application_url;

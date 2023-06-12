@@ -21,8 +21,10 @@
       <sourceFolder url="file://$MODULE_DIR$/config" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/force-app/main/default" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/manifest" type="java-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/.sf" />
+      <excludeFolder url="file://$MODULE_DIR$/.sfdx" />
     </content>
-    <orderEntry type="jdk" jdkName="IlluminatedCloud (salesforce-saffull1/dev)" jdkType="IlluminatedCloud" />
+    <orderEntry type="jdk" jdkName="IlluminatedCloud (cl-originate/dev)" jdkType="IlluminatedCloud" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
